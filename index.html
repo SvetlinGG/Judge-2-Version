@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Judge System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Code Judge System</h1>
+        </header>
+        
+        <main>
+            <form id="submissionForm" class="submission-form">
+                <div class="form-group">
+                    <label for="taskSelect">Select Task:</label>
+                    <select id="taskSelect" required>
+                        <option value="">Choose a task...</option>
+                        <option value="task1">Task 1: Hello World</option>
+                        <option value="task2">Task 2: Sum of Numbers</option>
+                        <option value="task3">Task 3: Palindrome Checker</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="solutionCode">Your Solution:</label>
+                    <textarea id="solutionCode" rows="10" placeholder="Write your JavaScript code here..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Language:</label>
+                    <div class="language-selector">
+                        <input type="radio" id="javascript" name="language" value="javascript" checked>
+                        <label for="javascript">JavaScript</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Solution</button>
+            </form>
+
+            <div id="result" class="result-container">
+                <h2>Results</h2>
+                <div id="resultContent" class="result-content"></div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

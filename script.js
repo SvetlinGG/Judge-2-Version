@@ -1,77 +1,82 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('.theme-icon');
+    
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    }
+
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        localStorage.setItem('theme', newTheme);
+    });
+
+    // Task selection functionality
+    const taskItems = document.querySelectorAll('.task-item');
+    const solutionCode = document.getElementById('solutionCode');
+
+    taskItems.forEach(task => {
+        task.addEventListener('click', () => {
+            // Remove active class from all tasks
+            taskItems.forEach(t => t.classList.remove('active'));
+            // Add active class to selected task
+            task.classList.add('active');
+
+            // Update textarea placeholder based on selected task
+            const taskId = task.getAttribute('data-task');
+            switch(taskId) {
+                case 'task1':
+                    solutionCode.placeholder = `Example:
+function sayHello() {
+    return "Hello, World!";
+}`;
+                    break;
+                case 'task2':
+                    solutionCode.placeholder = `Example:
+function sum(a, b) {
+    return a + b;
+}`;
+                    break;
+                case 'task3':
+                    solutionCode.placeholder = `Example:
+function isPalindrome(str) {
+    return str === str.split('').reverse().join('');
+}`;
+                    break;
+            }
+        });
+    });
+
+    // Form submission handling
     const submissionForm = document.getElementById('submissionForm');
     const resultContent = document.getElementById('resultContent');
 
-    // Sample test cases for each task
-    const testCases = {
-        task1: {
-            description: "Hello World",
-            test: (code) => {
-                try {
-                    // Create a function from the submitted code
-                    const func = new Function(code);
-                    const result = func();
-                    return result === "Hello, World!";
-                } catch (error) {
-                    return false;
-                }
-            }
-        },
-        task2: {
-            description: "Sum of Numbers",
-            test: (code) => {
-                try {
-                    const func = new Function('a', 'b', code);
-                    return func(5, 3) === 8 && func(10, 20) === 30;
-                } catch (error) {
-                    return false;
-                }
-            }
-        },
-        task3: {
-            description: "Palindrome Checker",
-            test: (code) => {
-                try {
-                    const func = new Function('str', code);
-                    return func("radar") === true && 
-                           func("hello") === false && 
-                           func("A man, a plan, a canal: Panama") === true;
-                } catch (error) {
-                    return false;
-                }
-            }
-        }
-    };
-
     submissionForm.addEventListener('submit', (e) => {
         e.preventDefault();
-
-        const taskSelect = document.getElementById('taskSelect');
-        const solutionCode = document.getElementById('solutionCode');
-        const selectedTask = taskSelect.value;
-        const code = solutionCode.value;
-
-        if (!selectedTask || !code) {
-            showResult('Please select a task and provide your solution code.', 'error');
+        
+        const activeTask = document.querySelector('.task-item.active');
+        if (!activeTask) {
+            resultContent.innerHTML = '<p class="error">Please select a task first!</p>';
             return;
         }
 
-        // Test the solution
-        const testCase = testCases[selectedTask];
-        const passed = testCase.test(code);
-
-        if (passed) {
-            showResult('✅ Congratulations! Your solution passed all test cases.', 'success');
-        } else {
-            showResult('❌ Your solution did not pass the test cases. Please try again.', 'error');
-        }
-    });
-
-    function showResult(message, type) {
+        const code = solutionCode.value;
+        const taskId = activeTask.getAttribute('data-task');
+        
+        // Here you would typically send the code to your backend for evaluation
+        // For now, we'll just show a placeholder message
         resultContent.innerHTML = `
-            <div class="result-message ${type}">
-                ${message}
-            </div>
+            <p>Task: ${activeTask.querySelector('h3').textContent}</p>
+            <p>Code submitted successfully!</p>
+            <pre><code>${code}</code></pre>
         `;
-    }
+    });
 }); 

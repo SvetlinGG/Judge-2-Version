@@ -9,6 +9,19 @@
 <body>
     <div class="container">
         <header>
+            <div class="time-section">
+                <div class="clock-container">
+                    <div id="current-time" class="current-time"></div>
+                    <div id="current-date" class="current-date"></div>
+                </div>
+                <div class="timer-container">
+                    <div id="timer" class="timer">00:00:00</div>
+                    <div class="timer-controls">
+                        <button id="startTimer" class="timer-btn">Start</button>
+                        <button id="resetTimer" class="timer-btn">Reset</button>
+                    </div>
+                </div>
+            </div>
             <h1>Code Judge System</h1>
             <button id="themeToggle" class="theme-toggle">
                 <span class="theme-icon">🌙</span>
@@ -35,12 +48,20 @@ function sum(a, b) {
                         </div>
                     </div>
 
-                    <button type="submit" class="submit-btn">Submit Solution</button>
+                    <div class="submission-controls">
+                        <button type="submit" class="submit-btn">Submit Solution</button>
+                        <div class="test-coverage">
+                            <div class="coverage-header">Test Coverage</div>
+                            <div id="coveragePercentage" class="coverage-percentage">0%</div>
+                            <div id="coverageDetails" class="coverage-details"></div>
+                        </div>
+                    </div>
                 </form>
 
                 <div id="result" class="result-container">
                     <h2>Results</h2>
                     <div id="resultContent" class="result-content"></div>
+                    <div id="executionTime" class="execution-time"></div>
                 </div>
             </div>
 

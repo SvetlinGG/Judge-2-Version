@@ -235,6 +235,7 @@ textarea:focus {
     display: flex;
     gap: 0.25rem;
     justify-content: center;
+    flex-wrap: nowrap;
 }
 
 .timer-btn {
@@ -246,6 +247,7 @@ textarea:focus {
     cursor: pointer;
     transition: background-color 0.3s;
     font-size: 0.7rem;
+    min-width: 45px;
 }
 
 .timer-btn:hover {

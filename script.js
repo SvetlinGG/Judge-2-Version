@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let elapsedTime = 0;
     const timerDisplay = document.getElementById('timer');
     const startButton = document.getElementById('startTimer');
+    const stopButton = document.getElementById('stopTimer');
     const resetButton = document.getElementById('resetTimer');
     let isRunning = false;
 
@@ -47,6 +48,12 @@ document.addEventListener('DOMContentLoaded', () => {
             startButton.textContent = 'Start';
             isRunning = false;
         }
+    });
+
+    stopButton.addEventListener('click', () => {
+        clearInterval(timerInterval);
+        startButton.textContent = 'Start';
+        isRunning = false;
     });
 
     resetButton.addEventListener('click', () => {

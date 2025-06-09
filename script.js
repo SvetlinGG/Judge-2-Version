@@ -686,4 +686,50 @@ function processInput(type, input) {
 
     // Initialize statistics
     updateStatistics();
+
+    // Modal functionality
+    const modal = document.getElementById('taskModal');
+    const modalClose = document.querySelector('.modal-close');
+    const modalBody = document.querySelector('.modal-body');
+
+    function showModal() {
+        modal.classList.add('show');
+    }
+
+    function hideModal() {
+        modal.classList.remove('show');
+    }
+
+    modalClose.addEventListener('click', hideModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            hideModal();
+        }
+    });
+
+    // Add click handler to task items
+    document.querySelectorAll('.task-item').forEach(taskItem => {
+        taskItem.addEventListener('click', async () => {
+            const taskId = taskItem.getAttribute('data-task');
+            if (taskId === 'task4' || taskId === 'task6' || taskId === 'task7') {
+                try {
+                    const response = await fetch(`task-conditions/${taskId}.md`);
+                    if (!response.ok) {
+                        throw new Error('Failed to load task conditions');
+                    }
+                    const content = await response.text();
+                    
+                    // Extract title from the first line
+                    const title = content.split('\n')[0].replace('# ', '');
+                    
+                    document.querySelector('.modal-header h3').textContent = title;
+                    modalBody.innerHTML = `<div class="task-conditions">${content}</div>`;
+                    showModal();
+                } catch (error) {
+                    console.error('Error loading task conditions:', error);
+                    modalBody.innerHTML = '<div class="error">Failed to load task conditions</div>';
+                }
+            }
+        });
+    });
 });

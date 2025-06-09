@@ -1,24 +1,30 @@
 :root {
     /* Light theme variables */
-    --bg-primary: #f0f8ff;
-    --bg-secondary: #ffffff;
-    --text-primary: #1a365d;
-    --text-secondary: #2c5282;
-    --accent-primary: #3182ce;
-    --accent-secondary: #63b3ed;
-    --border-color: #e2e8f0;
-    --shadow-color: rgba(0, 0, 0, 0.1);
+    --bg-primary: #ffffff;
+    --bg-secondary: #f3f4f6;
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+    --accent-primary: #2563eb;
+    --accent-secondary: #3b82f6;
+    --border-color: #e5e7eb;
+    --shadow-color: rgba(0, 0, 0, 0.05);
+    --success-color: #059669;
+    --error-color: #dc2626;
+    --warning-color: #d97706;
 }
 
 [data-theme="dark"] {
-    --bg-primary: #1a365d;
-    --bg-secondary: #2c5282;
-    --text-primary: #f0f8ff;
-    --text-secondary: #e2e8f0;
-    --accent-primary: #63b3ed;
-    --accent-secondary: #3182ce;
-    --border-color: #4a5568;
+    --bg-primary: #111827;
+    --bg-secondary: #1f2937;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --accent-primary: #3b82f6;
+    --accent-secondary: #60a5fa;
+    --border-color: #374151;
     --shadow-color: rgba(0, 0, 0, 0.3);
+    --success-color: #059669;
+    --error-color: #dc2626;
+    --warning-color: #d97706;
 }
 
 * {
@@ -28,43 +34,52 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
-    transition: background-color 0.3s, color 0.3s;
+    transition: all 0.3s ease;
 }
 
 h1 {
-    color: var(--accent-primary);
+    color: var(--text-primary);
     font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
 }
 
 h2 {
     color: var(--text-primary);
     font-size: 1.8rem;
+    font-weight: 600;
     margin-bottom: 1rem;
+    letter-spacing: -0.025em;
 }
 
 h3 {
-    color: var(--accent-primary);
+    color: var(--text-primary);
     font-size: 1.2rem;
+    font-weight: 600;
     margin-bottom: 0.5rem;
 }
 
 p {
     color: var(--text-secondary);
     margin-bottom: 1rem;
+    font-size: 1rem;
+    line-height: 1.7;
 }
 
 label {
     display: block;
     margin-bottom: 0.5rem;
-    color: var(--text-secondary);
+    color: var(--text-primary);
+    font-weight: 500;
 }
 
 .helper-text {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     color: var(--text-secondary);
     margin-bottom: 0.5rem;
+    font-weight: 400;
 } 

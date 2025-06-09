@@ -487,7 +487,17 @@ function processInput(type, input) {
         const circle = document.getElementById(elementId);
         if (circle) {
             const degrees = percentage * 360;
+            
+            // Add animation class
+            circle.classList.add('progress-animation');
+            
+            // Update the progress
             circle.style.background = `conic-gradient(var(--accent-primary) ${degrees}deg, transparent ${degrees}deg)`;
+            
+            // Remove animation class after animation completes
+            setTimeout(() => {
+                circle.classList.remove('progress-animation');
+            }, 500);
         }
     }
 

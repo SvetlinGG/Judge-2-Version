@@ -256,6 +256,22 @@ textarea:focus {
     transition: background 0.3s ease;
 }
 
+.result-progress-circle.progress-animation {
+    animation: progressPulse 0.5s ease;
+}
+
+@keyframes progressPulse {
+    0% {
+        background: conic-gradient(#1e40af 0%, transparent 0%);
+    }
+    50% {
+        background: conic-gradient(#1e40af 100%, transparent 0%);
+    }
+    100% {
+        background: conic-gradient(var(--accent-primary) 0%, transparent 0%);
+    }
+}
+
 /* Special styling for Success Rate and Completed Tasks */
 .result-card.circular {
     width: 60px;
@@ -288,6 +304,22 @@ textarea:focus {
 .result-card.circular .result-progress-circle {
     width: 56px;
     height: 56px;
+}
+
+.result-card.circular .result-progress-circle.progress-animation {
+    animation: circularProgressPulse 0.5s ease;
+}
+
+@keyframes circularProgressPulse {
+    0% {
+        background: conic-gradient(#1e40af 0%, transparent 0%);
+    }
+    50% {
+        background: conic-gradient(#1e40af 100%, transparent 0%);
+    }
+    100% {
+        background: conic-gradient(var(--accent-primary) 0%, transparent 0%);
+    }
 }
 
 /* Statistics */
@@ -453,4 +485,87 @@ textarea:focus {
     font-size: 0.875rem;
     font-weight: 500;
     border: 1px solid var(--accent-primary);
-} 
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: var(--bg-primary);
+    border: 2px solid var(--accent-primary);
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    margin: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--accent-primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+    color: var(--accent-primary);
+}
+
+.modal-body {
+    padding: 1rem;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.task-conditions {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    white-space: pre-wrap;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+}
+
+/* End of file */ 

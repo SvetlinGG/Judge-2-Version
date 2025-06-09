@@ -87,11 +87,51 @@ document.addEventListener("DOMContentLoaded", () => {
         document.documentElement.setAttribute("data-theme", newTheme);
         themeIcon.textContent = newTheme === "dark" ? "☀️" : "🌙";
         localStorage.setItem("theme", newTheme);
+        
+        // Update syntax highlighting after theme change
+        setTimeout(updateHighlighting, 0);
     });
+
+    // Syntax highlighting functionality
+    const solutionCode = document.getElementById("solutionCode");
+    let highlightedCode = '';
+
+    function highlightSyntax(code) {
+        // Method names pattern (common JavaScript methods)
+        const methodPattern = /\b(function|return|if|else|for|while|const|let|var)\b/g;
+        
+        // Replace methods with highlighted spans
+        return code.replace(methodPattern, match => `<span class="method">${match}</span>`);
+    }
+
+    function updateHighlighting() {
+        const code = solutionCode.value;
+        highlightedCode = highlightSyntax(code);
+        
+        // Create a temporary div to hold the highlighted content
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = highlightedCode;
+        
+        // Get the plain text content
+        const plainText = tempDiv.textContent;
+        
+        // Update the textarea with plain text
+        solutionCode.value = plainText;
+        
+        // Store the highlighted version
+        solutionCode.dataset.highlighted = highlightedCode;
+    }
+
+    // Add event listeners for syntax highlighting
+    solutionCode.addEventListener('input', updateHighlighting);
+    solutionCode.addEventListener('focus', updateHighlighting);
+    solutionCode.addEventListener('blur', updateHighlighting);
+
+    // Initialize highlighting for any existing content
+    updateHighlighting();
 
     // Task selection functionality
     const taskItems = document.querySelectorAll(".task-item");
-    const solutionCode = document.getElementById("solutionCode");
 
     // Test cases for each task
     const testCases = {

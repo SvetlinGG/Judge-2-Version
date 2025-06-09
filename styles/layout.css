@@ -1,5 +1,5 @@
 .container {
-    max-width: 1280px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 1.5rem;
 }
@@ -15,68 +15,68 @@ header {
 
 .main-content {
     display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 1.5rem;
+    grid-template-columns: 1fr 350px;
+    gap: 2rem;
 }
 
 .code-section {
     background-color: var(--bg-primary);
     padding: 1.5rem;
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 1px 3px var(--shadow-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .tasks-section {
     background-color: var(--bg-primary);
     padding: 1.25rem;
-    border-radius: 8px;
+    border-radius: 12px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 1px 3px var(--shadow-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
     height: fit-content;
 }
 
 .task-list {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 .time-section {
     display: flex;
     flex-direction: row;
-    gap: 0.75rem;
+    gap: 1rem;
     align-items: center;
 }
 
 .clock-container {
     background-color: var(--bg-primary);
-    padding: 0.75rem;
-    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
     border: 1px solid var(--border-color);
     box-shadow: 0 1px 2px var(--shadow-color);
-    min-width: 140px;
+    min-width: 160px;
 }
 
 .timer-container {
     background-color: var(--bg-primary);
-    padding: 0.75rem;
-    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
     border: 1px solid var(--border-color);
     box-shadow: 0 1px 2px var(--shadow-color);
-    min-width: 140px;
+    min-width: 160px;
 }
 
 .submission-controls {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    margin-top: 1rem;
+    gap: 1rem;
+    margin-top: 1.5rem;
     flex-wrap: wrap;
 }
 
 .result-container {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--border-color);
 }
@@ -88,8 +88,8 @@ header {
     }
 
     .main-content {
-        grid-template-columns: 1fr 280px;
-        gap: 1rem;
+        grid-template-columns: 1fr 300px;
+        gap: 1.5rem;
     }
 }
 
@@ -100,7 +100,7 @@ header {
 
     header {
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 1rem;
         align-items: flex-start;
         margin-bottom: 1.5rem;
     }
@@ -159,7 +159,7 @@ header {
     }
 
     .tasks-section {
-        width: 240px;
+        width: 280px;
         margin-bottom: 0;
         overflow-y: auto;
         max-height: calc(100vh - 2rem);

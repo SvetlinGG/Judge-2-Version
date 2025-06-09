@@ -404,7 +404,91 @@ function processInput(type, input) {
     const coverageDetails = document.getElementById("coverageDetails");
     const executionTime = document.getElementById("executionTime");
 
-    submissionForm.addEventListener("submit", (e) => {
+    // Statistics and Results Management
+    let taskResults = {
+        totalTasks: 7, // Total number of available tasks
+        completedTasks: 0,
+        totalPoints: 0,
+        maxPoints: 0,
+        passedTests: 0,
+        totalTests: 0
+    };
+
+    function updateStatistics() {
+        // Update result cards
+        document.getElementById('totalPoints').textContent = taskResults.totalPoints;
+        document.getElementById('completedTasks').textContent = taskResults.completedTasks;
+        
+        const successRate = taskResults.totalTests > 0 
+            ? Math.round((taskResults.passedTests / taskResults.totalTests) * 100) 
+            : 0;
+        document.getElementById('successRate').textContent = `${successRate}%`;
+
+        // Update statistics
+        const taskCompletion = Math.round((taskResults.completedTasks / taskResults.totalTasks) * 100);
+        document.getElementById('taskCompletion').textContent = `${taskCompletion}%`;
+
+        const averageScore = taskResults.maxPoints > 0 
+            ? Math.round((taskResults.totalPoints / taskResults.maxPoints) * 100) 
+            : 0;
+        document.getElementById('averageScore').textContent = `${averageScore}%`;
+
+        document.getElementById('overallSuccessRate').textContent = `${successRate}%`;
+
+        // Update circular progress indicators
+        updateCircularProgress('totalPointsCircle', taskResults.totalPoints / 100);
+        updateCircularProgress('successRateCircle', successRate / 100);
+        updateCircularProgress('completedTasksCircle', taskResults.completedTasks / taskResults.totalTasks);
+        updateCircularProgress('taskCompletionCircle', taskCompletion / 100);
+        updateCircularProgress('averageScoreCircle', averageScore / 100);
+    }
+
+    function updateCircularProgress(elementId, percentage) {
+        const circle = document.getElementById(elementId);
+        if (circle) {
+            const degrees = percentage * 360;
+            circle.style.background = `conic-gradient(var(--accent-primary) ${degrees}deg, transparent ${degrees}deg)`;
+        }
+    }
+
+    function addTestCase(testCase) {
+        const testCasesList = document.getElementById('testCasesList');
+        const testCaseElement = document.createElement('div');
+        testCaseElement.className = 'test-case';
+        
+        testCaseElement.innerHTML = `
+            <div class="test-case-header">
+                <span class="test-case-title">${testCase.name}</span>
+                <span class="test-case-status ${testCase.passed ? 'passed' : 'failed'}">
+                    ${testCase.passed ? 'Passed' : 'Failed'}
+                </span>
+            </div>
+            <div class="test-case-details">
+                <div>Input: ${JSON.stringify(testCase.input)}</div>
+                <div>Expected: ${JSON.stringify(testCase.expected)}</div>
+                <div>Actual: ${JSON.stringify(testCase.actual)}</div>
+            </div>
+        `;
+        
+        testCasesList.appendChild(testCaseElement);
+    }
+
+    function clearTestCases() {
+        const testCasesList = document.getElementById('testCasesList');
+        testCasesList.innerHTML = '';
+    }
+
+    function updateTaskResults(results) {
+        taskResults.completedTasks++;
+        taskResults.totalPoints += results.points;
+        taskResults.maxPoints += results.maxPoints;
+        taskResults.passedTests += results.passedTests;
+        taskResults.totalTests += results.totalTests;
+        
+        updateStatistics();
+    }
+
+    submissionForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const activeTask = document.querySelector(".task-item.active");
@@ -527,6 +611,14 @@ function processInput(type, input) {
             executionTime.textContent = `Execution time: ${executionTimeMs.toFixed(
                 2
             )}ms`;
+
+            // Update task results
+            updateTaskResults({
+                points: passedTests,
+                maxPoints: tests.length,
+                passedTests: passedTests,
+                totalTests: tests.length
+            });
         } catch (error) {
             resultContent.innerHTML = `<p class="error">Error: ${error.message}</p>`;
         }
@@ -541,4 +633,7 @@ function processInput(type, input) {
             .map((param) => param.trim())
             .filter(Boolean);
     }
+
+    // Initialize statistics
+    updateStatistics();
 });

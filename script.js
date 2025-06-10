@@ -631,14 +631,33 @@ function processInput(type, input) {
             });
 
             resultContent.innerHTML = `
-                <p>Task: ${activeTask.querySelector("h3").textContent}</p>
-                <p>${passedTests} out of ${tests.length} tests passed</p>
+                <div class="test-progress-container">
+                    <div class="test-stats">
+                        <span>Tests Passed: <span class="test-stats-value">${passedTests}/${tests.length}</span></span>
+                        <span>Coverage: <span class="test-stats-value">${((passedTests / tests.length) * 100).toFixed(0)}%</span></span>
+                    </div>
+                    <div class="test-progress-bar">
+                        <div class="test-progress-fill" style="width: ${(passedTests / tests.length) * 100}%"></div>
+                    </div>
+                    <div class="test-results-summary">
+                        <h4>Test Results</h4>
+                        <div class="test-results-list">
+                            ${results.map(result => `
+                                <div class="test-result-item">
+                                    <div class="test-result-icon ${result.passed ? 'passed' : 'failed'}"></div>
+                                    <div class="test-result-text">
+                                        ${result.description}
+                                        ${!result.passed ? `<br><small>Expected: ${JSON.stringify(result.expected)}, Got: ${JSON.stringify(result.received)}</small>` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
             `;
+
             // Update coverage percentage display
-            coveragePercentage.textContent = `${(
-                (passedTests / tests.length) *
-                100
-            ).toFixed(0)}%`;
+            coveragePercentage.textContent = `${((passedTests / tests.length) * 100).toFixed(0)}%`;
             
             // Add animation class
             coveragePercentage.classList.add('updated');
@@ -654,9 +673,9 @@ function processInput(type, input) {
     <div class="test-result ${result.passed ? "passed" : "failed"}">
         Test ${result.testNumber}: ${result.description}
         ${!result.passed
-                            ? `<br>Expected: ${result.expected}, Got: ${result.received}`
-                            : ""
-                        }
+            ? `<br>Expected: ${JSON.stringify(result.expected)}, Got: ${JSON.stringify(result.received)}`
+            : ""
+        }
     </div>
 `
                 )

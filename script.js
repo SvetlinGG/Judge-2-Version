@@ -289,10 +289,18 @@ function processInput(type, input) {
                         .replace(/\n\n/g, '</p><p>')
                         .replace(/\n/g, '<br>');
                     
-                    elements.taskConditionsContent.innerHTML = `<p>${htmlContent}</p>`;
+                    elements.taskConditionsContent.innerHTML = `
+                        <div class="task-conditions">
+                            <h3>${task.querySelector('h3').textContent}</h3>
+                            <p>${task.querySelector('p').textContent}</p>
+                            <div class="task-details">
+                                ${htmlContent}
+                            </div>
+                        </div>
+                    `;
                 } else {
                     elements.taskConditionsContent.innerHTML = `
-                        <div class="task-conditions-placeholder">
+                        <div class="task-conditions">
                             <h3>${task.querySelector('h3').textContent}</h3>
                             <p>${task.querySelector('p').textContent}</p>
                             <p class="note">Detailed conditions will be available soon.</p>
@@ -302,8 +310,10 @@ function processInput(type, input) {
             } catch (error) {
                 console.error('Error loading task conditions:', error);
                 elements.taskConditionsContent.innerHTML = `
-                    <div class="task-conditions-error">
-                        <p>Error loading task conditions. Please try again later.</p>
+                    <div class="task-conditions">
+                        <h3>${task.querySelector('h3').textContent}</h3>
+                        <p>${task.querySelector('p').textContent}</p>
+                        <p class="error">Error loading task conditions. Please try again later.</p>
                     </div>
                 `;
             }

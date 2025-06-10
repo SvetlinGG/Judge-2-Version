@@ -24,15 +24,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const timeElement = document.getElementById("current-time");
         const dateElement = document.getElementById("current-date");
 
-        if (timeElement && dateElement) {
-            timeElement.textContent = now.toLocaleTimeString();
-            dateElement.textContent = now.toLocaleDateString(undefined, {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-            });
-        }
+        // Update time
+        timeElement.textContent = now.toLocaleTimeString();
+
+        // Update date
+        const options = {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        };
+        dateElement.textContent = now.toLocaleDateString(undefined, options);
     }
 
     // Update clock immediately and then every second
@@ -49,65 +51,103 @@ document.addEventListener("DOMContentLoaded", () => {
     const resetButton = document.getElementById('resetTimer');
     let isRunning = false;
 
-    if (timerDisplay && startButton && stopButton && resetButton) {
-        function updateTimer() {
-            const now = Date.now();
-            elapsedTime = now - startTime;
-            const time = new Date(elapsedTime);
-            const hours = time.getUTCHours().toString().padStart(2, "0");
-            const minutes = time.getUTCMinutes().toString().padStart(2, "0");
-            const seconds = time.getUTCSeconds().toString().padStart(2, "0");
-            timerDisplay.textContent = `${hours}:${minutes}:${seconds}`;
-        }
+    function updateTimer() {
+        const now = Date.now();
+        elapsedTime = now - startTime;
+        const time = new Date(elapsedTime);
+        const hours = time.getUTCHours().toString().padStart(2, "0");
+        const minutes = time.getUTCMinutes().toString().padStart(2, "0");
+        const seconds = time.getUTCSeconds().toString().padStart(2, "0");
+        timerDisplay.textContent = `${hours}:${minutes}:${seconds}`;
+    }
 
-        startButton.addEventListener("click", () => {
-            if (!isRunning) {
-                startTime = Date.now() - elapsedTime;
-                timerInterval = setInterval(updateTimer, 10);
-                startButton.textContent = "Pause";
-                isRunning = true;
-            } else {
-                clearInterval(timerInterval);
-                startButton.textContent = "Start";
-                isRunning = false;
-            }
-        });
-
-        stopButton.addEventListener('click', () => {
+    startButton.addEventListener("click", () => {
+        if (!isRunning) {
+            startTime = Date.now() - elapsedTime;
+            timerInterval = setInterval(updateTimer, 10);
+            startButton.textContent = "Pause";
+            isRunning = true;
+        } else {
             clearInterval(timerInterval);
-            startButton.textContent = 'Start';
-            isRunning = false;
-        });
-
-        resetButton.addEventListener('click', () => {
-            clearInterval(timerInterval);
-            elapsedTime = 0;
-            timerDisplay.textContent = "00:00:00";
             startButton.textContent = "Start";
             isRunning = false;
-        });
-    }
+        }
+    });
+
+    stopButton.addEventListener('click', () => {
+        clearInterval(timerInterval);
+        startButton.textContent = 'Start';
+        isRunning = false;
+    });
+
+    resetButton.addEventListener('click', () => {
+        clearInterval(timerInterval);
+        elapsedTime = 0;
+        timerDisplay.textContent = "00:00:00";
+        startButton.textContent = "Start";
+        isRunning = false;
+    });
 
     // Theme toggle functionality
     const themeToggle = document.getElementById("themeToggle");
-    const themeIcon = themeToggle?.querySelector(".theme-icon");
+    const themeIcon = themeToggle.querySelector(".theme-icon");
 
-    if (themeToggle && themeIcon) {
-        const savedTheme = localStorage.getItem("theme");
-        if (savedTheme) {
-            document.documentElement.setAttribute("data-theme", savedTheme);
-            themeIcon.textContent = savedTheme === "dark" ? "☀️" : "🌙";
-        }
-
-        themeToggle.addEventListener("click", () => {
-            const currentTheme = document.documentElement.getAttribute("data-theme");
-            const newTheme = currentTheme === "dark" ? "light" : "dark";
-
-            document.documentElement.setAttribute("data-theme", newTheme);
-            themeIcon.textContent = newTheme === "dark" ? "☀️" : "🌙";
-            localStorage.setItem("theme", newTheme);
-        });
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        themeIcon.textContent = savedTheme === "dark" ? "☀️" : "🌙";
     }
+
+    themeToggle.addEventListener("click", () => {
+        const currentTheme = document.documentElement.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+        document.documentElement.setAttribute("data-theme", newTheme);
+        themeIcon.textContent = newTheme === "dark" ? "☀️" : "🌙";
+        localStorage.setItem("theme", newTheme);
+        
+        // Update syntax highlighting after theme change
+        setTimeout(updateHighlighting, 0);
+    });
+
+    // Syntax highlighting functionality
+    const solutionCode = document.getElementById("solutionCode");
+    let highlightedCode = '';
+
+    function highlightSyntax(code) {
+        // Method names pattern (common JavaScript methods)
+        const methodPattern = /\b(function|return|if|else|for|while|const|let|var)\b/g;
+        
+        // Replace methods with highlighted spans
+        return code.replace(methodPattern, match => `<span class="method">${match}</span>`);
+    }
+
+    function updateHighlighting() {
+        const code = solutionCode.value;
+        highlightedCode = highlightSyntax(code);
+        
+        // Create a temporary div to hold the highlighted content
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = highlightedCode;
+        
+        // Get the plain text content
+        const plainText = tempDiv.textContent;
+        
+        // Update the textarea with plain text
+        solutionCode.value = plainText;
+        
+        // Store the highlighted version
+        solutionCode.dataset.highlighted = highlightedCode;
+    }
+
+    // Add event listeners for syntax highlighting
+    solutionCode.addEventListener('input', updateHighlighting);
+    solutionCode.addEventListener('focus', updateHighlighting);
+    solutionCode.addEventListener('blur', updateHighlighting);
+
+    // Initialize highlighting for any existing content
+    updateHighlighting();
 
     // Task selection functionality
     elements.taskItems.forEach((task) => {
@@ -116,27 +156,114 @@ document.addEventListener("DOMContentLoaded", () => {
             task.classList.add("active");
 
             const taskId = task.getAttribute("data-task");
-            updatePlaceholder(taskId);
-        });
-    });
-
-    function updatePlaceholder(taskId) {
-        const placeholders = {
-            task1: `Example:
+            switch (taskId) {
+                case "task1":
+                    solutionCode.placeholder = `Example:
 function sayHello() {
     return "Hello, World!";
-}`,
-            task2: `Example:
+}`;
+                    break;
+                case "task2":
+                    solutionCode.placeholder = `Example:
 function sum(a, b) {
     return a + b;
-}`,
-            // ... other task placeholders ...
-        };
+}`;
+                    break;
+                case "task3":
+                    solutionCode.placeholder = `Example:
+function isPalindrome(str) {
+    // Convert input to lowercase and remove non-alphabet characters manually
+    let cleanStr = "";
+    str = String(str).toLowerCase();
 
-        if (elements.solutionCode && placeholders[taskId]) {
-            elements.solutionCode.placeholder = placeholders[taskId];
+    for (let i = 0; i < str.length; i++) {
+        let char = str[i];
+        if ((char >= "a" && char <= "z") || (char >= "0" && char <= "9")) {
+            cleanStr += char;
         }
     }
+
+    // Reverse and compare
+    let reversedStr = "";
+    for (let j = cleanStr.length - 1; j >= 0; j--) {
+        reversedStr += cleanStr[j];
+    }
+
+    return cleanStr === reversedStr;
+}`;
+                    break;
+                case "task4":
+                    solutionCode.placeholder = `Example:
+function isPrime(num) {
+    if (num <= 1) return false;
+    for (let i = 2; i * i <= num; i++) {
+        if (num % i === 0) return false;
+    }
+    return true;
+}`;
+                    break;
+                case "task5":
+                    solutionCode.placeholder = `Example:
+function checkWinner(board) {
+    // Check rows and columns
+    for (let i = 0; i < 3; i++) {
+        // Row check
+        if (board[i][0] !== 0 && board[i][0] === board[i][1] && board[i][1] === board[i][2]) {
+            return board[i][0] === 1 ? "First player won" : "Second player won";
+        }
+
+        // Column check
+        if (board[0][i] !== 0 && board[0][i] === board[1][i] && board[1][i] === board[2][i]) {
+            return board[0][i] === 1 ? "First player won" : "Second player won";
+        }
+    }
+
+    // Diagonal (top-left to bottom-right)
+    if (board[0][0] !== 0 && board[0][0] === board[1][1] && board[1][1] === board[2][2]) {
+        return board[0][0] === 1 ? "First player won" : "Second player won";
+    }
+
+    // Diagonal (top-right to bottom-left)
+    if (board[0][2] !== 0 && board[0][2] === board[1][1] && board[1][1] === board[2][0]) {
+        return board[0][2] === 1 ? "First player won" : "Second player won";
+    }
+
+    // No winner
+    return "Draw!";
+}`;
+                    break;
+                case "task6":
+                    solutionCode.placeholder = `Example:
+function largestNumber(n) {
+    // Convert number to string, remove negative sign if present
+    const isNegative = n < 0;
+    let sortedDigits = Math.abs(n)
+        .toString()
+        .split('')
+        .sort((a, b) => b - a)
+        .join('');
+    
+    // Return number, preserving negative sign if needed
+    return isNegative ? -parseInt(sortedDigits) : parseInt(sortedDigits);
+}`;
+                    break;
+                case "task7":
+                    solutionCode.placeholder = `Example:
+function processInput(type, input) {
+    if (type === "int") {
+        return parseInt(input, 10) * 2;
+    } else if (type === "real") {
+        return parseFloat((parseFloat(input) * 1.5).toFixed(2));
+    } else if (type === "string") {
+        return "$" + input + "$"; // Updated formatting
+    } else {
+        return "Invalid type";
+    }
+}`;
+                    break;
+            }
+        });
+    });
 
     // Form submission handling
     if (elements.submissionForm) {

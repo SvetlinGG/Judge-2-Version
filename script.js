@@ -559,70 +559,65 @@ function processInput(type, input) {
 
         const activeTask = document.querySelector(".task-item.active");
         if (!activeTask) {
-            resultContent.innerHTML =
-                '<p class="error">Please select a task first!</p>';
+            alert("Please select a task first!");
             return;
         }
 
-        const code = solutionCode.value;
+        const code = solutionCode.value.trim();
+        if (!code) {
+            alert("Please enter your solution code!");
+            return;
+        }
+
         const taskId = activeTask.getAttribute("data-task");
         const tests = testCases[taskId];
 
-        // Measure execution time
-        const startTime = performance.now();
-
-        // Run tests
-        let passedTests = 0;
-        const results = [];
+        // Clear previous results
+        clearTestCases();
+        
+        // Show loading state
+        const submitButton = submissionForm.querySelector('.submit-btn');
+        const originalButtonText = submitButton.textContent;
+        submitButton.textContent = 'Testing...';
+        submitButton.disabled = true;
 
         try {
+            // Measure execution time
+            const startTime = performance.now();
+
+            // Run tests
+            let passedTests = 0;
+            const results = [];
+
             // Dynamically create a function
             let match = code.match(/function\s+([a-zA-Z_$][0-9a-zA-Z_$]*)\s*\(/);
             const functionName = match ? match[1] : null;
 
             if (!functionName) {
-                resultContent.innerHTML = `<p class="error">No valid function found in your code.</p>`;
-                return;
+                throw new Error("No valid function found in your code. Please include a function definition.");
             }
 
-            console.log("Extracted function name:", functionName);
-
             const params = getFunctionParameters(code);
-            const func = new Function(...params, `${code}; return ${functionName}(${params.join(",")});`
-            );
+            const func = new Function(...params, `${code}; return ${functionName}(${params.join(",")});`);
 
-            let passedTests = 0;
-            const results = [];
-
+            // Run each test case
             tests.forEach((test, index) => {
                 try {
-                    const normalizedInput = Array.isArray(test.input)
-                        ? test.input
-                        : [test.input];
-
+                    const normalizedInput = Array.isArray(test.input) ? test.input : [test.input];
                     let result;
 
                     if (typeof test.input === "string") {
-                        // Single string argument
                         result = func(test.input);
                     } else if (Array.isArray(test.input) && test.input.every(item => typeof item === "string")) {
-                        // Multiple string arguments
                         result = func(...test.input);
-
-                    } else if (
-                        Array.isArray(test.input) &&
-                        test.input.every((num) => typeof num === "number")
-                    ) {
-                        result = func(...test.input); // Task 2
+                    } else if (Array.isArray(test.input) && test.input.every((num) => typeof num === "number")) {
+                        result = func(...test.input);
                     } else if (typeof test.input === "number") {
-                        result = func(test.input); // Task 6
-                    } else if (
-                        Array.isArray(test.input) &&
-                        typeof test.input[0] === "object"
-                    ) {
-                        result = func(test.input); // Task 5 - nested arrays or objects
+                        result = func(test.input);
+                    } else if (Array.isArray(test.input) && typeof test.input[0] === "object") {
+                        result = func(test.input);
                     } else {
-                        result = func(test.input); // fallback
+                        result = func(test.input);
                     }
 
                     const passed = result === test.expected;
@@ -646,6 +641,7 @@ function processInput(type, input) {
                 }
             });
 
+            // Update results display
             resultContent.innerHTML = `
                 <div class="test-progress-container">
                     <div class="test-stats">
@@ -674,35 +670,30 @@ function processInput(type, input) {
 
             // Update coverage percentage display
             coveragePercentage.textContent = `${((passedTests / tests.length) * 100).toFixed(0)}%`;
-            
-            // Add animation class
             coveragePercentage.classList.add('updated');
-            // Remove animation class after animation completes
             setTimeout(() => {
                 coveragePercentage.classList.remove('updated');
             }, 500);
 
-            // Update coverage details with test results
+            // Update coverage details
             coverageDetails.innerHTML = results
                 .map(
                     (result) => `
-    <div class="test-result ${result.passed ? "passed" : "failed"}">
-        Test ${result.testNumber}: ${result.description}
-        ${!result.passed
-            ? `<br>Expected: ${JSON.stringify(result.expected)}, Got: ${JSON.stringify(result.received)}`
-            : ""
-        }
-    </div>
-`
+                        <div class="test-result ${result.passed ? "passed" : "failed"}">
+                            Test ${result.testNumber}: ${result.description}
+                            ${!result.passed
+                                ? `<br>Expected: ${JSON.stringify(result.expected)}, Got: ${JSON.stringify(result.received)}`
+                                : ""
+                            }
+                        </div>
+                    `
                 )
                 .join("");
 
             // Measure execution time
             const endTime = performance.now();
             const executionTimeMs = endTime - startTime;
-            executionTime.textContent = `Execution time: ${executionTimeMs.toFixed(
-                2
-            )}ms`;
+            executionTime.textContent = `Execution time: ${executionTimeMs.toFixed(2)}ms`;
 
             // Update task results
             updateTaskResults({
@@ -711,8 +702,18 @@ function processInput(type, input) {
                 passedTests: passedTests,
                 totalTests: tests.length
             });
+
         } catch (error) {
-            resultContent.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            resultContent.innerHTML = `
+                <div class="error-message">
+                    <h4>Error in your solution:</h4>
+                    <p>${error.message}</p>
+                </div>
+            `;
+        } finally {
+            // Reset button state
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
         }
     });
 

@@ -2,7 +2,7 @@
 import taskTests from './tests/taskTests.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Initialize all required elements
+    
     const elements = {
         submissionForm: document.getElementById("submissionForm"),
         solutionCode: document.getElementById("solutionCode"),
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
         closeTaskBtn: document.querySelector('.close-task-btn')
     };
 
-    // Validate that all required elements exist
+    
     Object.entries(elements).forEach(([key, element]) => {
         if (!element) {
             console.error(`Required element not found: ${key}`);
@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const taskConditionsContent = document.querySelector('.task-conditions-content');
     const closeTaskBtn = document.querySelector('.close-task-btn');
     const codeTextarea = document.querySelector('#solutionCode');
+    const testInputTextarea = document.querySelector('#testInput');
 
     let currentTask = null;
 
@@ -77,28 +78,50 @@ document.addEventListener("DOMContentLoaded", () => {
             taskConditionsContent.innerHTML = '<p>Loading task conditions...</p>';
             taskConditionsSection.classList.add('visible');
 
-            const response = await fetch(`task-conditions/${taskNumber}.md`);
+            // Extract task number from the task identifier (e.g., "task4" -> "4")
+            const taskId = taskNumber.replace('task', '');
+            
+            // Fetch the markdown file from the task-conditions directory
+            const response = await fetch(`task-conditions/task${taskId}.md`);
             if (!response.ok) {
-                throw new Error(`Failed to load task ${taskNumber}`);
+                throw new Error(`Failed to load task ${taskId}`);
             }
             
             const content = await response.text();
             
-            // Convert markdown to HTML
+            // Convert markdown to HTML for the conditions panel
             const htmlContent = marked.parse(content);
             
-            // Update the content with proper styling
+            // Update the conditions panel content
             taskConditionsContent.innerHTML = `
                 <div class="task-details">
                     ${htmlContent}
                 </div>
             `;
+
+            // Format the content for the test input field
+            const formattedContent = content
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line) // Remove empty lines
+                .join('\n\n'); // Add extra spacing between sections
+
+            // Load the formatted content into the test input field
+            testInputTextarea.value = formattedContent;
+            
+            // Enable the test input field and make it scrollable
+            testInputTextarea.disabled = false;
+            testInputTextarea.style.overflowY = 'auto';
+            testInputTextarea.style.whiteSpace = 'pre-wrap';
+            testInputTextarea.style.fontFamily = 'monospace';
+            testInputTextarea.style.lineHeight = '1.5';
+            testInputTextarea.style.padding = '10px';
             
             currentTask = taskNumber;
             
             // Enable code textarea
             codeTextarea.disabled = false;
-            codeTextarea.placeholder = `Write your solution for Task ${taskNumber} here...`;
+            codeTextarea.placeholder = `Write your solution for Task ${taskId} here...`;
             
             // Clear previous code
             codeTextarea.value = '';
@@ -118,6 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <p>${error.message}</p>
                 </div>
             `;
+            testInputTextarea.value = 'Error loading task content. Please try again.';
         }
     }
 
@@ -128,6 +152,8 @@ document.addEventListener("DOMContentLoaded", () => {
         codeTextarea.disabled = true;
         codeTextarea.value = '';
         codeTextarea.placeholder = 'Select a task to see the example code...';
+        testInputTextarea.value = '';
+        testInputTextarea.disabled = true;
         currentTask = null;
     }
 

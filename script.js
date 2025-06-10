@@ -294,120 +294,100 @@ function processInput(type, input) {
     });
 
     // Form submission handling
-    if (elements.submissionForm) {
-        elements.submissionForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            clearResults();
+    const submissionForm = document.getElementById("submissionForm");
+    const resultContent = document.getElementById("resultContent");
+    const coveragePercentage = document.getElementById("coveragePercentage");
+    const coverageDetails = document.getElementById("coverageDetails");
+    const executionTime = document.getElementById("executionTime");
 
-            const activeTask = document.querySelector(".task-item.active");
-            if (!activeTask) {
-                alert("Please select a task first!");
-                return;
-            }
+    submissionForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        clearResults();
 
-            const code = elements.solutionCode.value.trim();
-            if (!code) {
-                alert("Please enter your solution code!");
-                return;
-            }
-
-            const taskId = activeTask.getAttribute("data-task");
-            const tests = testCases[taskId];
-
-            // Show loading state
-            elements.submitButton.textContent = 'Testing...';
-            elements.submitButton.disabled = true;
-
-            try {
-                const startTime = performance.now();
-                const results = runTests(code, tests);
-                const endTime = performance.now();
-                const executionTimeMs = endTime - startTime;
-
-                updateResults(results, tests.length, executionTimeMs);
-            } catch (error) {
-                showError(error.message);
-            } finally {
-                elements.submitButton.textContent = 'Submit Solution';
-                elements.submitButton.disabled = false;
-            }
-        });
-    }
-
-    function clearResults() {
-        if (elements.resultContent) elements.resultContent.innerHTML = '';
-        if (elements.coveragePercentage) elements.coveragePercentage.textContent = '0%';
-        if (elements.coverageDetails) elements.coverageDetails.innerHTML = '';
-        if (elements.executionTime) elements.executionTime.textContent = '';
-    }
-
-    function runTests(code, tests) {
-        let passedTests = 0;
-        const results = [];
-
-        const match = code.match(/function\s+([a-zA-Z_$][0-9a-zA-Z_$]*)\s*\(/);
-        const functionName = match ? match[1] : null;
-
-        if (!functionName) {
-            throw new Error("No valid function found in your code. Please include a function definition.");
+        const activeTask = document.querySelector(".task-item.active");
+        if (!activeTask) {
+            alert("Please select a task first!");
+            return;
         }
 
-        const params = getFunctionParameters(code);
-        const func = new Function(...params, `${code}; return ${functionName}(${params.join(",")});`);
-
-        tests.forEach((test, index) => {
-            try {
-                const result = executeTest(func, test);
-                if (result.passed) passedTests++;
-                results.push(result);
-            } catch (error) {
-                results.push({
-                    testNumber: index + 1,
-                    description: test.description,
-                    passed: false,
-                    expected: test.expected,
-                    received: `Error: ${error.message}`,
-                });
-            }
-        });
-
-        return { results, passedTests };
-    }
-
-    function executeTest(func, test) {
-        let result;
-        const input = test.input;
-
-        if (typeof input === "string") {
-            result = func(input);
-        } else if (Array.isArray(input)) {
-            result = func(...input);
-        } else {
-            result = func(input);
+        const code = solutionCode.value.trim();
+        if (!code) {
+            alert("Please enter your solution code!");
+            return;
         }
 
-        return {
-            testNumber: test.testNumber,
-            description: test.description,
-            passed: result === test.expected,
-            expected: test.expected,
-            received: result,
-        };
-    }
+        const taskId = activeTask.getAttribute("data-task");
+        const tests = testCases[taskId];
 
-    function updateResults(testResults, totalTests, executionTimeMs) {
-        const { results, passedTests } = testResults;
-        const coverage = (passedTests / totalTests) * 100;
+        // Show loading state
+        const submitButton = submissionForm.querySelector('.submit-btn');
+        const originalButtonText = submitButton.textContent;
+        submitButton.textContent = 'Testing...';
+        submitButton.disabled = true;
 
-        if (elements.resultContent) {
-            elements.resultContent.innerHTML = `
+        try {
+            // Measure execution time
+            const startTime = performance.now();
+
+            // Run tests
+            let passedTests = 0;
+            const results = [];
+
+            // Dynamically create a function
+            let match = code.match(/function\s+([a-zA-Z_$][0-9a-zA-Z_$]*)\s*\(/);
+            const functionName = match ? match[1] : null;
+
+            if (!functionName) {
+                throw new Error("No valid function found in your code. Please include a function definition.");
+            }
+
+            const params = getFunctionParameters(code);
+            const func = new Function(...params, `${code}; return ${functionName}(${params.join(",")});`);
+
+            // Run each test case
+            tests.forEach((test, index) => {
+                try {
+                    let result;
+                    const input = test.input;
+
+                    if (typeof input === "string") {
+                        result = func(input);
+                    } else if (Array.isArray(input)) {
+                        result = func(...input);
+                    } else {
+                        result = func(input);
+                    }
+
+                    const passed = result === test.expected;
+                    if (passed) passedTests++;
+
+                    results.push({
+                        testNumber: index + 1,
+                        description: test.description,
+                        passed,
+                        expected: test.expected,
+                        received: result,
+                    });
+                } catch (error) {
+                    results.push({
+                        testNumber: index + 1,
+                        description: test.description,
+                        passed: false,
+                        expected: test.expected,
+                        received: `Error: ${error.message}`,
+                    });
+                }
+            });
+
+            // Update results display
+            resultContent.innerHTML = `
                 <div class="test-progress-container">
                     <div class="test-stats">
-                        <span>Tests Passed: <span class="test-stats-value">${passedTests}/${totalTests}</span></span>
-                        <span>Coverage: <span class="test-stats-value">${coverage.toFixed(0)}%</span></span>
+                        <span>Tests Passed: <span class="test-stats-value">${passedTests}/${tests.length}</span></span>
+                        <span>Coverage: <span class="test-stats-value">${((passedTests / tests.length) * 100).toFixed(0)}%</span></span>
                     </div>
                     <div class="test-progress-bar">
-                        <div class="test-progress-fill" style="width: ${coverage}%"></div>
+                        <div class="test-progress-fill" style="width: ${(passedTests / tests.length) * 100}%"></div>
                     </div>
                     <div class="test-results-summary">
                         <h4>Test Results</h4>
@@ -434,30 +414,53 @@ function processInput(type, input) {
                     </div>
                 </div>
             `;
-        }
 
-        if (elements.coveragePercentage) {
-            elements.coveragePercentage.textContent = `${coverage.toFixed(0)}%`;
-            elements.coveragePercentage.classList.add('updated');
+            // Update coverage percentage display
+            coveragePercentage.textContent = `${((passedTests / tests.length) * 100).toFixed(0)}%`;
+            coveragePercentage.classList.add('updated');
             setTimeout(() => {
-                elements.coveragePercentage.classList.remove('updated');
+                coveragePercentage.classList.remove('updated');
             }, 500);
-        }
 
-        if (elements.executionTime) {
-            elements.executionTime.textContent = `Execution time: ${executionTimeMs.toFixed(2)}ms`;
-        }
-    }
+            // Update coverage details
+            coverageDetails.innerHTML = results
+                .map(
+                    (result) => `
+                        <div class="test-result ${result.passed ? "passed" : "failed"}">
+                            Test ${result.testNumber}: ${result.description}
+                            ${!result.passed
+                                ? `<br>Expected: ${JSON.stringify(result.expected)}, Got: ${JSON.stringify(result.received)}`
+                                : ""
+                            }
+                        </div>
+                    `
+                )
+                .join("");
 
-    function showError(message) {
-        if (elements.resultContent) {
-            elements.resultContent.innerHTML = `
+            // Measure execution time
+            const endTime = performance.now();
+            const executionTimeMs = endTime - startTime;
+            executionTime.textContent = `Execution time: ${executionTimeMs.toFixed(2)}ms`;
+
+        } catch (error) {
+            resultContent.innerHTML = `
                 <div class="error-message">
                     <h4>Error in your solution:</h4>
-                    <p>${message}</p>
+                    <p>${error.message}</p>
                 </div>
             `;
+        } finally {
+            // Reset button state
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
         }
+    });
+
+    function clearResults() {
+        if (elements.resultContent) elements.resultContent.innerHTML = '';
+        if (elements.coveragePercentage) elements.coveragePercentage.textContent = '0%';
+        if (elements.coverageDetails) elements.coverageDetails.innerHTML = '';
+        if (elements.executionTime) elements.executionTime.textContent = '';
     }
 
     function getFunctionParameters(code) {

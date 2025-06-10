@@ -470,8 +470,12 @@ function processInput(type, input) {
         const originalButtonText = submitButton.textContent;
         submitButton.textContent = 'Testing...';
         submitButton.disabled = true;
+        submitButton.classList.add('testing');
 
         try {
+            // Add a small delay to show the testing state
+            await new Promise(resolve => setTimeout(resolve, 500));
+
             // Measure execution time
             const startTime = performance.now();
 
@@ -596,9 +600,12 @@ function processInput(type, input) {
                 </div>
             `;
         } finally {
-            // Reset button state
-            submitButton.textContent = originalButtonText;
-            submitButton.disabled = false;
+            // Reset button state with a small delay
+            setTimeout(() => {
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+                submitButton.classList.remove('testing');
+            }, 500);
         }
     });
 

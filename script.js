@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const formattedContent = content
                 .split('\n')
                 .map(line => line.trim())
-                .filter(line => line) // Remove empty lines
+                .filter(line => line) 
                 .join('\n\n'); // Add extra spacing between sections
 
             // Load the formatted content into the test input field

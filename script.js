@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
         coverageDetails: document.getElementById("coverageDetails"),
         executionTime: document.getElementById("executionTime"),
         submitButton: document.querySelector(".submit-btn"),
-        taskItems: document.querySelectorAll(".task-item")
+        taskItems: document.querySelectorAll(".task-item"),
+        taskConditionsContent: document.getElementById("taskConditionsContent")
     };
 
     // Validate that all required elements exist
@@ -151,11 +152,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Task selection functionality
     elements.taskItems.forEach((task) => {
-        task.addEventListener("click", () => {
+        task.addEventListener("click", async () => {
             elements.taskItems.forEach((t) => t.classList.remove("active"));
             task.classList.add("active");
 
             const taskId = task.getAttribute("data-task");
+            
+            // Update code placeholder
             switch (taskId) {
                 case "task1":
                     solutionCode.placeholder = `Example:
@@ -261,6 +264,31 @@ function processInput(type, input) {
     }
 }`;
                     break;
+            }
+
+            // Load and display task conditions
+            try {
+                const response = await fetch(`task-conditions/${taskId}.md`);
+                if (response.ok) {
+                    const content = await response.text();
+                    // Convert markdown to HTML (you might want to use a markdown library)
+                    const htmlContent = content
+                        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+                        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+                        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                        .replace(/```(.*?)```/gs, '<pre><code>$1</code></pre>')
+                        .replace(/`(.*?)`/g, '<code>$1</code>')
+                        .replace(/\n/g, '<br>');
+                    
+                    elements.taskConditionsContent.innerHTML = htmlContent;
+                } else {
+                    elements.taskConditionsContent.innerHTML = '<p>No specific conditions available for this task.</p>';
+                }
+            } catch (error) {
+                console.error('Error loading task conditions:', error);
+                elements.taskConditionsContent.innerHTML = '<p>Error loading task conditions.</p>';
             }
         });
     });
@@ -385,11 +413,20 @@ function processInput(type, input) {
                         <h4>Test Results</h4>
                         <div class="test-results-list">
                             ${results.map(result => `
-                                <div class="test-result-item">
-                                    <div class="test-result-icon ${result.passed ? 'passed' : 'failed'}"></div>
+                                <div class="test-result-item ${result.passed ? 'passed' : 'failed'}">
+                                    <div class="test-result-icon"></div>
                                     <div class="test-result-text">
-                                        ${result.description}
-                                        ${!result.passed ? `<br><small>Expected: ${JSON.stringify(result.expected)}, Got: ${JSON.stringify(result.received)}</small>` : ''}
+                                        <div class="test-description">${result.description}</div>
+                                        ${!result.passed ? `
+                                            <div class="test-details">
+                                                <div class="test-expected">
+                                                    <strong>Expected:</strong> ${JSON.stringify(result.expected)}
+                                                </div>
+                                                <div class="test-received">
+                                                    <strong>Received:</strong> ${JSON.stringify(result.received)}
+                                                </div>
+                                            </div>
+                                        ` : ''}
                                     </div>
                                 </div>
                             `).join('')}

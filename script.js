@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
         executionTime: document.getElementById("executionTime"),
         submitButton: document.querySelector(".submit-btn"),
         taskItems: document.querySelectorAll(".task-item"),
-        taskConditionsContent: document.getElementById("taskConditionsContent")
+        taskConditionsSection: document.querySelector('.task-conditions-section'),
+        taskConditionsContent: document.querySelector('.task-conditions-content'),
+        closeTaskBtn: document.querySelector('.close-task-btn')
     };
 
     // Validate that all required elements exist
@@ -60,175 +62,90 @@ document.addEventListener("DOMContentLoaded", () => {
     // Initialize highlighting for any existing content
     updateHighlighting();
 
-    // Task selection functionality
-    elements.taskItems.forEach((task) => {
-        task.addEventListener("click", async () => {
-            // Remove active class from all tasks
-            elements.taskItems.forEach((t) => t.classList.remove("active"));
-            // Add active class to clicked task
-            task.classList.add("active");
+    // Task selection and condition loading
+    const taskItems = document.querySelectorAll('.task-item');
+    const taskConditionsSection = document.querySelector('.task-conditions-section');
+    const taskConditionsContent = document.querySelector('.task-conditions-content');
+    const closeTaskBtn = document.querySelector('.close-task-btn');
+    const codeTextarea = document.querySelector('#solutionCode');
 
-            const taskId = task.getAttribute("data-task");
-            
-            // Update code placeholder
-            switch (taskId) {
-                case "task1":
-                    solutionCode.placeholder = `Example:
-function sayHello() {
-    return "Hello, World!";
-}`;
-                    break;
-                case "task2":
-                    solutionCode.placeholder = `Example:
-function sum(a, b) {
-    return a + b;
-}`;
-                    break;
-                case "task3":
-                    solutionCode.placeholder = `Example:
-function isPalindrome(str) {
-    // Convert input to lowercase and remove non-alphabet characters manually
-    let cleanStr = "";
-    str = String(str).toLowerCase();
+    let currentTask = null;
 
-    for (let i = 0; i < str.length; i++) {
-        let char = str[i];
-        if ((char >= "a" && char <= "z") || (char >= "0" && char <= "9")) {
-            cleanStr += char;
-        }
-    }
+    async function loadTaskCondition(taskNumber) {
+        try {
+            // Show loading state
+            taskConditionsContent.innerHTML = '<p>Loading task conditions...</p>';
+            taskConditionsSection.classList.add('visible');
 
-    // Reverse and compare
-    let reversedStr = "";
-    for (let j = cleanStr.length - 1; j >= 0; j--) {
-        reversedStr += cleanStr[j];
-    }
-
-    return cleanStr === reversedStr;
-}`;
-                    break;
-                case "task4":
-                    solutionCode.placeholder = `Example:
-function isPrime(num) {
-    if (num <= 1) return false;
-    for (let i = 2; i * i <= num; i++) {
-        if (num % i === 0) return false;
-    }
-    return true;
-}`;
-                    break;
-                case "task5":
-                    solutionCode.placeholder = `Example:
-function checkWinner(board) {
-    // Check rows and columns
-    for (let i = 0; i < 3; i++) {
-        // Row check
-        if (board[i][0] !== 0 && board[i][0] === board[i][1] && board[i][1] === board[i][2]) {
-            return board[i][0] === 1 ? "First player won" : "Second player won";
-        }
-
-        // Column check
-        if (board[0][i] !== 0 && board[0][i] === board[1][i] && board[1][i] === board[2][i]) {
-            return board[0][i] === 1 ? "First player won" : "Second player won";
-        }
-    }
-
-    // Diagonal (top-left to bottom-right)
-    if (board[0][0] !== 0 && board[0][0] === board[1][1] && board[1][1] === board[2][2]) {
-        return board[0][0] === 1 ? "First player won" : "Second player won";
-    }
-
-    // Diagonal (top-right to bottom-left)
-    if (board[0][2] !== 0 && board[0][2] === board[1][1] && board[1][1] === board[2][0]) {
-        return board[0][2] === 1 ? "First player won" : "Second player won";
-    }
-
-    // No winner
-    return "Draw!";
-}`;
-                    break;
-                case "task6":
-                    solutionCode.placeholder = `Example:
-function largestNumber(n) {
-    // Convert number to string, remove negative sign if present
-    const isNegative = n < 0;
-    let sortedDigits = Math.abs(n)
-        .toString()
-        .split('')
-        .sort((a, b) => b - a)
-        .join('');
-    
-    // Return number, preserving negative sign if needed
-    return isNegative ? -parseInt(sortedDigits) : parseInt(sortedDigits);
-}`;
-                    break;
-                case "task7":
-                    solutionCode.placeholder = `Example:
-function processInput(type, input) {
-    if (type === "int") {
-        return parseInt(input, 10) * 2;
-    } else if (type === "real") {
-        return parseFloat((parseFloat(input) * 1.5).toFixed(2));
-    } else if (type === "string") {
-        return "$" + input + "$"; // Updated formatting
-    } else {
-        return "Invalid type";
-    }
-}`;
-                    break;
+            const response = await fetch(`task-conditions/${taskNumber}.md`);
+            if (!response.ok) {
+                throw new Error(`Failed to load task ${taskNumber}`);
             }
+            
+            const content = await response.text();
+            
+            // Convert markdown to HTML
+            const htmlContent = marked.parse(content);
+            
+            // Update the content with proper styling
+            taskConditionsContent.innerHTML = `
+                <div class="task-details">
+                    ${htmlContent}
+                </div>
+            `;
+            
+            currentTask = taskNumber;
+            
+            // Enable code textarea
+            codeTextarea.disabled = false;
+            codeTextarea.placeholder = `Write your solution for Task ${taskNumber} here...`;
+            
+            // Clear previous code
+            codeTextarea.value = '';
+            
+            // Update active state
+            taskItems.forEach(item => {
+                item.classList.toggle('active', item.dataset.task === taskNumber);
+            });
 
-            // Load and display task conditions
-            try {
-                const response = await fetch(`task-conditions/${taskId}.md`);
-                if (response.ok) {
-                    const content = await response.text();
-                    // Convert markdown to HTML with better formatting
-                    const htmlContent = content
-                        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-                        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-                        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                        .replace(/```(.*?)```/gs, '<pre><code>$1</code></pre>')
-                        .replace(/`(.*?)`/g, '<code>$1</code>')
-                        .replace(/\n\n/g, '</p><p>')
-                        .replace(/\n/g, '<br>');
-                    
-                    elements.taskConditionsContent.innerHTML = `
-                        <div class="task-conditions">
-                            <h3>${task.querySelector('h3').textContent}</h3>
-                            <p>${task.querySelector('p').textContent}</p>
-                            <div class="task-details">
-                                ${htmlContent}
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    elements.taskConditionsContent.innerHTML = `
-                        <div class="task-conditions">
-                            <h3>${task.querySelector('h3').textContent}</h3>
-                            <p>${task.querySelector('p').textContent}</p>
-                            <div class="task-details">
-                                <p class="note">Detailed conditions will be available soon.</p>
-                            </div>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Error loading task conditions:', error);
-                elements.taskConditionsContent.innerHTML = `
-                    <div class="task-conditions">
-                        <h3>${task.querySelector('h3').textContent}</h3>
-                        <p>${task.querySelector('p').textContent}</p>
-                        <div class="task-details">
-                            <p class="error">Error loading task conditions. Please try again later.</p>
-                        </div>
-                    </div>
-                `;
+            // Scroll to task conditions
+            taskConditionsSection.scrollIntoView({ behavior: 'smooth' });
+        } catch (error) {
+            console.error('Error loading task condition:', error);
+            taskConditionsContent.innerHTML = `
+                <div class="error-message">
+                    <h4>Error loading task conditions</h4>
+                    <p>${error.message}</p>
+                </div>
+            `;
+        }
+    }
+
+    // Close task conditions
+    function closeTaskConditions() {
+        taskConditionsSection.classList.remove('visible');
+        taskItems.forEach(item => item.classList.remove('active'));
+        codeTextarea.disabled = true;
+        codeTextarea.value = '';
+        codeTextarea.placeholder = 'Select a task to see the example code...';
+        currentTask = null;
+    }
+
+    taskItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const taskNumber = item.dataset.task;
+            if (currentTask !== taskNumber) {
+                loadTaskCondition(taskNumber);
             }
         });
     });
+
+    closeTaskBtn.addEventListener('click', closeTaskConditions);
+
+    // Initialize with first task
+    if (taskItems.length > 0) {
+        loadTaskCondition(taskItems[0].dataset.task);
+    }
 
     // Form submission handling
     const submissionForm = document.getElementById("submissionForm");
@@ -414,10 +331,5 @@ function processInput(type, input) {
             .split(",")
             .map((param) => param.trim())
             .filter(Boolean);
-    }
-
-    // Initialize the first task
-    if (elements.taskItems.length > 0) {
-        elements.taskItems[0].click();
     }
 });

@@ -18,10 +18,7 @@
                     <div class="form-group">
                         <label for="solutionCode">Your Solution:</label>
                         <p class="helper-text">Please provide the complete function definition, including the function name and parameters.</p>
-                        <textarea id="solutionCode" rows="10" placeholder="Example:
-function sum(a, b) {
-    return a + b;
-}" required></textarea>
+                        <textarea id="solutionCode" rows="10" placeholder="Select a task to see the example code..." required></textarea>
                     </div>
 
                     <div class="form-group">
@@ -51,25 +48,9 @@ function sum(a, b) {
             <div class="tasks-section">
                 <h2>Available Tasks</h2>
                 <div class="task-list">
-                    <div class="task-item" data-task="task1">
-                        <h3>Task 1: Hello World</h3>
-                        <p>Write a function that returns "Hello, World!"</p>
-                    </div>
-                    <div class="task-item" data-task="task2">
-                        <h3>Task 2: Sum of Numbers</h3>
-                        <p>Write a function that calculates the sum of two numbers</p>
-                    </div>
-                    <div class="task-item" data-task="task3">
-                        <h3>Task 3: Palindrome Checker</h3>
-                        <p>Write a function that checks if a string is a palindrome</p>
-                    </div>
                     <div class="task-item" data-task="task4">
                         <h3>Task 4: Prime Number Checker</h3>
                         <p>Write a function isPrime(number) that returns true if the number is prime, false otherwise.</p>
-                    </div>
-                    <div class="task-item" data-task="task5">
-                        <h3>Task 5: Tic-Tac-Toe Winner Checker</h3>
-                        <p>Write a function checkWinner(board) that determines the game result.</p>
                     </div>
                     <div class="task-item" data-task="task6">
                         <h3>Task 6: Largest Number</h3>
@@ -83,11 +64,12 @@ function sum(a, b) {
             </div>
 
             <div class="task-conditions-section">
-                <div id="taskConditions" class="task-conditions">
+                <div class="task-conditions-header">
                     <h3>Task Conditions</h3>
-                    <div id="taskConditionsContent" class="task-conditions-content">
-                        Select a task to view its conditions
-                    </div>
+                    <button class="close-task-btn">&times;</button>
+                </div>
+                <div id="taskConditionsContent" class="task-conditions-content">
+                    Select a task to view its conditions
                 </div>
             </div>
         </main>

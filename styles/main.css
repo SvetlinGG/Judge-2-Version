@@ -511,79 +511,77 @@ body {
 /* Time section styles */
 .time-section {
     display: flex;
+    gap: 2rem;
     align-items: center;
-    gap: 20px;
-    background-color: var(--surface-primary);
-    padding: 15px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
     border-radius: 8px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
 }
 
 .clock-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px 20px;
-    background-color: var(--bg-secondary);
+    padding: 0.5rem 1rem;
+    background-color: var(--bg-primary);
     border-radius: 6px;
+    border: 1px solid var(--border-color);
     min-width: 200px;
-    box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .current-time {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: var(--text-primary);
-    margin-bottom: 5px;
     font-family: 'Courier New', monospace;
 }
 
 .current-date {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
+    margin-top: 0.25rem;
 }
 
-/* Timer styles */
 .timer-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 15px;
-    background-color: var(--bg-secondary);
+    padding: 0.5rem 1rem;
+    background-color: var(--bg-primary);
     border-radius: 6px;
+    border: 1px solid var(--border-color);
     min-width: 200px;
-    box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .timer {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: var(--text-primary);
-    margin-bottom: 10px;
     font-family: 'Courier New', monospace;
+    margin-bottom: 0.5rem;
 }
 
 .timer-controls {
     display: flex;
-    gap: 10px;
+    gap: 0.5rem;
 }
 
 .timer-btn {
-    padding: 8px 20px;
-    background-color: var(--accent-primary);
-    color: white;
+    padding: 0.5rem 1rem;
     border: none;
     border-radius: 4px;
+    background-color: var(--accent-primary);
+    color: white;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
 .timer-btn:hover {
     background-color: var(--accent-secondary);
-    transform: translateY(-2px);
-    box-shadow: 0 2px 4px var(--shadow-color);
+    transform: translateY(-1px);
 }
 
 .timer-btn:active {

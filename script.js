@@ -53,61 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateClock();
     setInterval(updateClock, 1000);
 
-    // Timer functionality
-    let timerInterval;
-    let startTime;
-    let elapsedTime = 0;
-    let isRunning = false;
-
-    const timerDisplay = document.getElementById('timer');
-    const startButton = document.getElementById('startTimer');
-    const stopButton = document.getElementById('stopTimer');
-    const resetButton = document.getElementById('resetTimer');
-
-    if (!timerDisplay || !startButton || !stopButton || !resetButton) {
-        console.error("Timer elements not found");
-    } else {
-        function updateTimer() {
-            const now = Date.now();
-            elapsedTime = now - startTime;
-            const time = new Date(elapsedTime);
-            const hours = time.getUTCHours().toString().padStart(2, "0");
-            const minutes = time.getUTCMinutes().toString().padStart(2, "0");
-            const seconds = time.getUTCSeconds().toString().padStart(2, "0");
-            timerDisplay.textContent = `${hours}:${minutes}:${seconds}`;
-        }
-
-        // Initialize timer display
-        timerDisplay.textContent = "00:00:00";
-
-        startButton.addEventListener("click", () => {
-            if (!isRunning) {
-                startTime = Date.now() - elapsedTime;
-                timerInterval = setInterval(updateTimer, 10);
-                startButton.textContent = "Pause";
-                isRunning = true;
-            } else {
-                clearInterval(timerInterval);
-                startButton.textContent = "Start";
-                isRunning = false;
-            }
-        });
-
-        stopButton.addEventListener('click', () => {
-            clearInterval(timerInterval);
-            startButton.textContent = 'Start';
-            isRunning = false;
-        });
-
-        resetButton.addEventListener('click', () => {
-            clearInterval(timerInterval);
-            elapsedTime = 0;
-            timerDisplay.textContent = "00:00:00";
-            startButton.textContent = "Start";
-            isRunning = false;
-        });
-    }
-
     // Theme toggle functionality
     const themeToggle = document.getElementById("themeToggle");
     const themeIcon = themeToggle.querySelector(".theme-icon");

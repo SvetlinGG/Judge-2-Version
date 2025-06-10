@@ -511,7 +511,6 @@ body {
 /* Time section styles */
 .time-section {
     display: flex;
-    gap: 2rem;
     align-items: center;
     margin-bottom: 1rem;
     padding: 1rem;
@@ -542,86 +541,6 @@ body {
     font-size: 0.9rem;
     color: var(--text-secondary);
     margin-top: 0.25rem;
-}
-
-.timer-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    background-color: var(--bg-primary);
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
-    min-width: 200px;
-}
-
-.timer {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--text-primary);
-    font-family: 'Courier New', monospace;
-    margin-bottom: 0.5rem;
-}
-
-.timer-controls {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.timer-btn {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    background-color: var(--accent-primary);
-    color: white;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.timer-btn:hover {
-    background-color: var(--accent-secondary);
-    transform: translateY(-1px);
-}
-
-.timer-btn:active {
-    transform: translateY(0);
-}
-
-/* Header styles */
-header {
-    background-color: var(--bg-secondary);
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-/* Clock styles */
-.clock {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-    background: var(--bg-secondary);
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#current-time {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--text-primary);
-    font-family: 'Courier New', monospace;
-}
-
-#current-date {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    margin-top: 0.5rem;
 }
 
 /* Theme toggle styles */

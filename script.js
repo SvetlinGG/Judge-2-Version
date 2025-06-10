@@ -327,14 +327,44 @@ function processInput(type, input) {
                 expected: 8
             },
             {
-                description: "Should handle negative numbers",
+                description: "Should add two negative numbers",
+                input: [-5, -3],
+                expected: -8
+            },
+            {
+                description: "Should add positive and negative numbers",
+                input: [5, -3],
+                expected: 2
+            },
+            {
+                description: "Should add negative and positive numbers",
                 input: [-5, 3],
                 expected: -2
             },
             {
-                description: "Should handle zero",
+                description: "Should handle zero with positive number",
+                input: [0, 5],
+                expected: 5
+            },
+            {
+                description: "Should handle zero with negative number",
+                input: [0, -5],
+                expected: -5
+            },
+            {
+                description: "Should handle two zeros",
                 input: [0, 0],
                 expected: 0
+            },
+            {
+                description: "Should handle large numbers",
+                input: [999999, 1],
+                expected: 1000000
+            },
+            {
+                description: "Should handle decimal numbers",
+                input: [3.5, 2.5],
+                expected: 6
             }
         ],
         task3: [

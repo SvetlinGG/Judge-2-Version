@@ -1,6 +1,11 @@
 // Import test cases
 import taskTests from './tests/taskTests.js';
 
+// Add marked.js for markdown parsing
+const markedScript = document.createElement('script');
+markedScript.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+document.head.appendChild(markedScript);
+
 document.addEventListener("DOMContentLoaded", () => {
     
     const elements = {
@@ -115,9 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
     async function loadTaskCondition(taskNumber) {
         try {
             // Show loading state
-            taskConditionsContent.innerHTML = '<p>Loading task conditions...</p>';
-            taskConditionsSection.classList.add('visible');
-
+            testInputTextarea.value = 'Loading task conditions...';
+            
             // Extract task number from the task identifier (e.g., "task4" -> "4")
             const taskId = taskNumber.replace('task', '');
             
@@ -129,29 +133,13 @@ document.addEventListener("DOMContentLoaded", () => {
             
             const content = await response.text();
             
-            // Convert markdown to HTML for the conditions panel
-            const htmlContent = marked.parse(content);
+            // Load the content into the test input field
+            testInputTextarea.value = content;
             
-            // Update the conditions panel content
-            taskConditionsContent.innerHTML = `
-                <div class="task-details">
-                    ${htmlContent}
-                </div>
-            `;
-
-            // Format the content for the test input field
-            const formattedContent = content
-                .split('\n')
-                .map(line => line.trim())
-                .filter(line => line) 
-                .join('\n\n'); // Add extra spacing between sections
-
-            // Load the formatted content into the test input field
-            testInputTextarea.value = formattedContent;
-            
-            // Enable the test input field and make it scrollable
-            testInputTextarea.disabled = false;
+            // Configure the test input field
+            testInputTextarea.readOnly = true;
             testInputTextarea.style.overflowY = 'auto';
+            testInputTextarea.style.height = '300px';
             testInputTextarea.style.whiteSpace = 'pre-wrap';
             testInputTextarea.style.fontFamily = 'monospace';
             testInputTextarea.style.lineHeight = '1.5';
@@ -171,17 +159,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 item.classList.toggle('active', item.dataset.task === taskNumber);
             });
 
-            // Scroll to task conditions
-            taskConditionsSection.scrollIntoView({ behavior: 'smooth' });
+            // Show the close button for test input
+            document.getElementById('closeTestInput').style.display = 'block';
+
         } catch (error) {
             console.error('Error loading task condition:', error);
-            taskConditionsContent.innerHTML = `
-                <div class="error-message">
-                    <h4>Error loading task conditions</h4>
-                    <p>${error.message}</p>
-                </div>
-            `;
-            testInputTextarea.value = 'Error loading task content. Please try again.';
+            testInputTextarea.value = `Error loading task ${taskNumber}: ${error.message}`;
         }
     }
 
@@ -193,8 +176,17 @@ document.addEventListener("DOMContentLoaded", () => {
         codeTextarea.value = '';
         codeTextarea.placeholder = 'Select a task to see the example code...';
         testInputTextarea.value = '';
-        testInputTextarea.disabled = true;
+        testInputTextarea.readOnly = true;
         currentTask = null;
+        
+        // Hide the close button for test input
+        document.getElementById('closeTestInput').style.display = 'none';
+    }
+    
+    // Close test input
+    function closeTestInput() {
+        testInputTextarea.value = '';
+        document.getElementById('closeTestInput').style.display = 'none';
     }
 
     taskItems.forEach(item => {
@@ -207,6 +199,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     closeTaskBtn.addEventListener('click', closeTaskConditions);
+    
+    // Add event listener for close test input button
+    document.getElementById('closeTestInput').addEventListener('click', closeTestInput);
+    
+    // Hide the close button initially
+    document.getElementById('closeTestInput').style.display = 'none';
 
     // Initialize with first task
     if (taskItems.length > 0) {

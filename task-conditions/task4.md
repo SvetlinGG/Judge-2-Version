@@ -1,33 +1,27 @@
-# Task 4: Prime Number Checker
+# Prime Number Checker
 
-Write a function isPrime(number) that determines whether a given number is prime or not.
+## Task Description
+Write a function `isPrime(number)` that determines whether a given number is prime or not.
 
-## Requirements:
-1. The function should take a single number as input
-2. Return true if the number is prime, false otherwise
-3. Handle edge cases:
-   - Numbers less than 2 should return false
-   - Negative numbers should return false
-   - Zero should return false
-   - One should return false
+## Requirements
+- The function should return `true` if the number is prime, and `false` otherwise.
+- A prime number is a natural number greater than 1 that is not divisible by any positive integer other than 1 and itself.
+- The function should handle edge cases properly:
+  - Numbers less than or equal to 1 are not prime
+  - The number 2 is prime (the only even prime number)
 
-## Example:
-Input: 7
-Output: true
+## Examples
+- `isPrime(7)` should return `true` (7 is prime)
+- `isPrime(4)` should return `false` (4 = 2 × 2)
+- `isPrime(1)` should return `false` (1 is not prime by definition)
+- `isPrime(2)` should return `true` (2 is prime)
+- `isPrime(13)` should return `true` (13 is prime)
+- `isPrime(25)` should return `false` (25 = 5 × 5)
 
-Input: 8
-Output: false
+## Constraints
+- The input will be a positive integer
+- You can assume the input will be within the range of JavaScript's Number type
 
-Input: 2
-Output: true
-
-Input: 1
-Output: false
-
-Input: -7
-Output: false
-
-## Note:
-- A prime number is a natural number greater than 1 that is not divisible by any positive integer other than 1 and itself
-- The function should be efficient for larger numbers
-- Consider using the square root optimization for better performance 
+## Hints
+- The most straightforward approach is to check if the number is divisible by any integer from 2 to the square root of the number.
+- You don't need to check divisibility beyond the square root of the number.

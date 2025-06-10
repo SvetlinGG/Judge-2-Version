@@ -1,3 +1,6 @@
+// Import test cases
+import taskTests from './tests/taskTests.js';
+
 document.addEventListener("DOMContentLoaded", () => {
     // Initialize all required elements
     const elements = {
@@ -306,139 +309,6 @@ function processInput(type, input) {
         });
     });
 
-    // Define test cases for each task
-    const testCases = {
-        task1: [
-            {
-                description: "Should return 'Hello, World!'",
-                input: "",
-                expected: "Hello, World!"
-            },
-            {
-                description: "Should return exact string 'Hello, World!'",
-                input: "",
-                expected: "Hello, World!"
-            }
-        ],
-        task2: [
-            {
-                description: "Should add two positive numbers",
-                input: [5, 3],
-                expected: 8
-            },
-            {
-                description: "Should add two negative numbers",
-                input: [-5, -3],
-                expected: -8
-            },
-            {
-                description: "Should add positive and negative numbers",
-                input: [5, -3],
-                expected: 2
-            },
-            {
-                description: "Should add negative and positive numbers",
-                input: [-5, 3],
-                expected: -2
-            },
-            {
-                description: "Should handle zero with positive number",
-                input: [0, 5],
-                expected: 5
-            },
-            {
-                description: "Should handle zero with negative number",
-                input: [0, -5],
-                expected: -5
-            },
-            {
-                description: "Should handle two zeros",
-                input: [0, 0],
-                expected: 0
-            },
-            {
-                description: "Should handle large numbers",
-                input: [999999, 1],
-                expected: 1000000
-            },
-            {
-                description: "Should handle decimal numbers",
-                input: [3.5, 2.5],
-                expected: 6
-            }
-        ],
-        task3: [
-            {
-                description: "Should identify palindrome",
-                input: "racecar",
-                expected: true
-            },
-            {
-                description: "Should handle non-palindrome",
-                input: "hello",
-                expected: false
-            },
-            {
-                description: "Should handle empty string",
-                input: "",
-                expected: true
-            }
-        ],
-        task4: [
-            {
-                description: "Should identify prime number",
-                input: 7,
-                expected: true
-            },
-            {
-                description: "Should handle non-prime number",
-                input: 8,
-                expected: false
-            },
-            {
-                description: "Should handle edge cases",
-                input: 1,
-                expected: false
-            }
-        ],
-        task5: [
-            {
-                description: "Should identify winner in row",
-                input: [[1, 1, 1], [0, 0, 0], [0, 0, 0]],
-                expected: "First player won"
-            },
-            {
-                description: "Should identify winner in column",
-                input: [[2, 0, 0], [2, 0, 0], [2, 0, 0]],
-                expected: "Second player won"
-            }
-        ],
-        task6: [
-            {
-                description: "Should find largest number",
-                input: 1234,
-                expected: 4321
-            },
-            {
-                description: "Should handle single digit",
-                input: 5,
-                expected: 5
-            }
-        ],
-        task7: [
-            {
-                description: "Should process integer",
-                input: ["int", "5"],
-                expected: 10
-            },
-            {
-                description: "Should process real number",
-                input: ["real", "5.5"],
-                expected: 8.25
-            }
-        ]
-    };
-
     // Form submission handling
     const submissionForm = document.getElementById("submissionForm");
     const resultContent = document.getElementById("resultContent");
@@ -463,7 +333,7 @@ function processInput(type, input) {
         }
 
         const taskId = activeTask.getAttribute("data-task");
-        const tests = testCases[taskId];
+        const tests = taskTests[taskId];
 
         // Show loading state
         const submitButton = submissionForm.querySelector('.submit-btn');

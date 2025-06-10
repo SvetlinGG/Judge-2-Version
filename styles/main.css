@@ -792,4 +792,266 @@ textarea:focus {
 
 .test-result-item.failed {
     border-left: 4px solid var(--error-color);
+}
+
+/* Responsive Design */
+/* Base container */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Main content grid layout */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+    padding: 20px;
+    height: calc(100vh - 180px);
+}
+
+/* Code section */
+.code-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Form styles */
+.submission-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Task list */
+.task-list {
+    display: grid;
+    gap: 15px;
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+}
+
+/* Media Queries */
+/* Large Desktop (1400px and up) */
+@media screen and (min-width: 1400px) {
+    .container {
+        padding: 30px;
+    }
+
+    .main-content {
+        gap: 30px;
+    }
+}
+
+/* Desktop (1024px to 1399px) */
+@media screen and (max-width: 1399px) {
+    .container {
+        padding: 20px;
+    }
+
+    .main-content {
+        grid-template-columns: 1fr 280px;
+    }
+}
+
+/* Tablet (768px to 1023px) */
+@media screen and (max-width: 1023px) {
+    .container {
+        padding: 15px;
+    }
+
+    .main-content {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+
+    .task-conditions-section {
+        position: static;
+        margin-top: 20px;
+    }
+
+    .task-list {
+        max-height: none;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Mobile (up to 767px) */
+@media screen and (max-width: 767px) {
+    .container {
+        padding: 10px;
+    }
+
+    header {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .main-content {
+        padding: 10px;
+        gap: 15px;
+    }
+
+    .submission-form {
+        padding: 15px;
+    }
+
+    .task-list {
+        padding: 10px;
+    }
+
+    .task-item {
+        padding: 10px;
+    }
+
+    .task-conditions {
+        padding: 15px;
+    }
+
+    .result-container {
+        padding: 15px;
+    }
+
+    .test-coverage {
+        padding: 10px;
+    }
+
+    .timer-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .timer-btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    /* Adjust text sizes for better readability */
+    .current-time {
+        font-size: 1.2rem;
+    }
+
+    .current-date {
+        font-size: 0.8rem;
+    }
+
+    .task-item h3 {
+        font-size: 1rem;
+    }
+
+    .task-item p {
+        font-size: 0.9rem;
+    }
+
+    .coverage-percentage {
+        font-size: 1rem;
+    }
+
+    .test-result-item {
+        padding: 10px;
+    }
+
+    .test-description {
+        font-size: 0.9rem;
+    }
+
+    .test-details {
+        font-size: 0.8rem;
+    }
+}
+
+/* Small Mobile (up to 480px) */
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 5px;
+    }
+
+    header {
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: 1.2rem;
+    }
+
+    .main-content {
+        padding: 5px;
+    }
+
+    .submission-form {
+        padding: 10px;
+    }
+
+    textarea {
+        padding: 8px;
+    }
+
+    .submit-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    .task-list {
+        padding: 5px;
+    }
+
+    .task-item {
+        padding: 8px;
+    }
+
+    .task-conditions {
+        padding: 10px;
+    }
+
+    .result-container {
+        padding: 10px;
+    }
+
+    .test-coverage {
+        padding: 8px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .container {
+        padding: 0;
+    }
+
+    header {
+        box-shadow: none;
+        border: none;
+    }
+
+    .main-content {
+        display: block;
+        height: auto;
+    }
+
+    .task-conditions-section {
+        display: none;
+    }
+
+    .submit-btn,
+    .timer-btn {
+        display: none;
+    }
 } 

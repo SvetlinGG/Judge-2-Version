@@ -153,7 +153,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Task selection functionality
     elements.taskItems.forEach((task) => {
         task.addEventListener("click", async () => {
+            // Remove active class from all tasks
             elements.taskItems.forEach((t) => t.classList.remove("active"));
+            // Add active class to clicked task
             task.classList.add("active");
 
             const taskId = task.getAttribute("data-task");
@@ -271,7 +273,7 @@ function processInput(type, input) {
                 const response = await fetch(`task-conditions/${taskId}.md`);
                 if (response.ok) {
                     const content = await response.text();
-                    // Convert markdown to HTML (you might want to use a markdown library)
+                    // Convert markdown to HTML with better formatting
                     const htmlContent = content
                         .replace(/^# (.*$)/gm, '<h1>$1</h1>')
                         .replace(/^## (.*$)/gm, '<h2>$1</h2>')
@@ -280,15 +282,26 @@ function processInput(type, input) {
                         .replace(/\*(.*?)\*/g, '<em>$1</em>')
                         .replace(/```(.*?)```/gs, '<pre><code>$1</code></pre>')
                         .replace(/`(.*?)`/g, '<code>$1</code>')
+                        .replace(/\n\n/g, '</p><p>')
                         .replace(/\n/g, '<br>');
                     
-                    elements.taskConditionsContent.innerHTML = htmlContent;
+                    elements.taskConditionsContent.innerHTML = `<p>${htmlContent}</p>`;
                 } else {
-                    elements.taskConditionsContent.innerHTML = '<p>No specific conditions available for this task.</p>';
+                    elements.taskConditionsContent.innerHTML = `
+                        <div class="task-conditions-placeholder">
+                            <h3>${task.querySelector('h3').textContent}</h3>
+                            <p>${task.querySelector('p').textContent}</p>
+                            <p class="note">Detailed conditions will be available soon.</p>
+                        </div>
+                    `;
                 }
             } catch (error) {
                 console.error('Error loading task conditions:', error);
-                elements.taskConditionsContent.innerHTML = '<p>Error loading task conditions.</p>';
+                elements.taskConditionsContent.innerHTML = `
+                    <div class="task-conditions-error">
+                        <p>Error loading task conditions. Please try again later.</p>
+                    </div>
+                `;
             }
         });
     });

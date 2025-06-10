@@ -317,33 +317,90 @@
     height: 100%;
 }
 
-.task-conditions h3 {
-    margin: 0 0 10px 0;
+.task-conditions h1 {
+    font-size: 1.4em;
     color: var(--text-primary);
-    font-size: 1.1em;
+    margin: 0 0 15px 0;
+    padding-bottom: 8px;
     border-bottom: 2px solid var(--accent-primary);
-    padding-bottom: 6px;
 }
 
-.task-conditions-content {
+.task-conditions h2 {
+    font-size: 1.2em;
+    color: var(--text-primary);
+    margin: 15px 0 10px 0;
+}
+
+.task-conditions h3 {
+    font-size: 1.1em;
+    color: var(--text-primary);
+    margin: 12px 0 8px 0;
+}
+
+.task-conditions p {
     color: var(--text-secondary);
-    font-size: 0.85em;
-    line-height: 1.4;
-    overflow-y: auto;
-    max-height: 300px;
-    padding-right: 5px;
-}
-
-.task-conditions-content pre {
-    background: var(--surface-primary);
-    padding: 8px;
-    border-radius: 4px;
-    overflow-x: auto;
-    margin: 8px 0;
     font-size: 0.9em;
+    line-height: 1.5;
+    margin: 8px 0;
 }
 
-.task-conditions-content code {
+.task-conditions pre {
+    background: var(--surface-primary);
+    padding: 12px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 10px 0;
+    font-size: 0.9em;
+    border: 1px solid var(--border-color);
+}
+
+.task-conditions code {
     font-family: 'Courier New', Courier, monospace;
     font-size: 0.9em;
+    background: var(--surface-primary);
+    padding: 2px 4px;
+    border-radius: 3px;
+    color: var(--accent-primary);
+}
+
+.task-conditions strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.task-conditions em {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.task-conditions-placeholder {
+    padding: 15px;
+    background: var(--surface-primary);
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.task-conditions-placeholder h3 {
+    color: var(--text-primary);
+    margin: 0 0 10px 0;
+}
+
+.task-conditions-placeholder p {
+    color: var(--text-secondary);
+    margin: 5px 0;
+}
+
+.task-conditions-placeholder .note {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-top: 10px;
+}
+
+.task-conditions-error {
+    padding: 15px;
+    background: var(--error-bg);
+    border: 1px solid var(--error-color);
+    border-radius: 6px;
+    color: var(--error-color);
 } 

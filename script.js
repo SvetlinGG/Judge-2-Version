@@ -28,11 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const timeElement = document.getElementById("current-time");
         const dateElement = document.getElementById("current-date");
 
-        // Update time with leading zeros
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+        // Update time
+        timeElement.textContent = now.toLocaleTimeString();
 
         // Update date
         const options = {
@@ -114,6 +111,9 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // Save preference
         localStorage.setItem("theme", newTheme);
+        
+        // Update syntax highlighting after theme change
+        setTimeout(updateHighlighting, 0);
     });
 
     // Syntax highlighting functionality

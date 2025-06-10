@@ -60,71 +60,8 @@ function sum(a, b) {
                 </form>
 
                 <div id="result" class="result-container">
-                    <div class="results-summary">
-                        <div class="result-card">
-                            <div class="result-label">Total Points</div>
-                            <div class="result-value" id="totalPoints">0</div>
-                            <div class="result-progress">
-                                <div class="result-progress-circle" id="totalPointsCircle"></div>
-                            </div>
-                        </div>
-                        <div class="result-card circular">
-                            <div class="result-label">Success Rate</div>
-                            <div class="result-value" id="successRate">0%</div>
-                            <div class="result-progress">
-                                <div class="result-progress-circle" id="successRateCircle"></div>
-                            </div>
-                        </div>
-                        <div class="result-card circular">
-                            <div class="result-label">Completed Tasks</div>
-                            <div class="result-value" id="completedTasks">0</div>
-                            <div class="result-progress">
-                                <div class="result-progress-circle" id="completedTasksCircle"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="test-cases">
-                        <h3>Test Cases</h3>
-                        <div id="testCasesList">
-                            <!-- Test cases will be dynamically added here -->
-                        </div>
-                    </div>
-
-                    <div class="statistics">
-                        <div class="statistics-header">
-                            <h3 class="statistics-title">Statistics</h3>
-                        </div>
-                        <div class="statistics-grid">
-                            <div class="stat-card">
-                                <div class="stat-header">
-                                    <span class="stat-title">Task Completion</span>
-                                </div>
-                                <div class="stat-value" id="taskCompletion">0%</div>
-                                <div class="stat-progress">
-                                    <div class="stat-progress-circle" id="taskCompletionCircle"></div>
-                                </div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-header">
-                                    <span class="stat-title">Average Score</span>
-                                </div>
-                                <div class="stat-value" id="averageScore">0%</div>
-                                <div class="stat-progress">
-                                    <div class="stat-progress-circle" id="averageScoreCircle"></div>
-                                </div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-header">
-                                    <span class="stat-title">Success Rate</span>
-                                </div>
-                                <div class="stat-value" id="overallSuccessRate">0%</div>
-                                <div class="stat-progress">
-                                    <div class="stat-progress-circle" id="successRateCircle"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div id="resultContent" class="result-content"></div>
+                    <div id="executionTime" class="execution-time"></div>
                 </div>
             </div>
 

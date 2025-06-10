@@ -74,6 +74,18 @@
     background-color: var(--bg-secondary);
     border-radius: 8px;
     border: 1px solid var(--border-color);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .test-progress-bar {
@@ -89,6 +101,13 @@
     height: 100%;
     background-color: var(--accent-primary);
     transition: width 0.5s ease-in-out;
+    animation: fillProgress 0.5s ease-out;
+}
+
+@keyframes fillProgress {
+    from {
+        width: 0;
+    }
 }
 
 .test-stats {
@@ -132,7 +151,25 @@
     padding: 0.5rem;
     background-color: var(--bg-secondary);
     border-radius: 4px;
+    animation: slideIn 0.3s ease-out;
+    animation-fill-mode: both;
 }
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.test-result-item:nth-child(1) { animation-delay: 0.1s; }
+.test-result-item:nth-child(2) { animation-delay: 0.2s; }
+.test-result-item:nth-child(3) { animation-delay: 0.3s; }
+.test-result-item:nth-child(4) { animation-delay: 0.4s; }
 
 .test-result-icon {
     width: 16px;
@@ -181,4 +218,19 @@
 .submit-btn:disabled:hover {
     transform: none;
     box-shadow: none;
+}
+
+.result-content {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.execution-time {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: right;
 } 

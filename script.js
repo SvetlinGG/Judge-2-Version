@@ -554,8 +554,16 @@ function processInput(type, input) {
         updateStatistics();
     }
 
+    function clearResults() {
+        resultContent.innerHTML = '';
+        coveragePercentage.textContent = '0%';
+        coverageDetails.innerHTML = '';
+        executionTime.textContent = '';
+    }
+
     submissionForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+        clearResults();
 
         const activeTask = document.querySelector(".task-item.active");
         if (!activeTask) {
@@ -572,9 +580,6 @@ function processInput(type, input) {
         const taskId = activeTask.getAttribute("data-task");
         const tests = testCases[taskId];
 
-        // Clear previous results
-        clearTestCases();
-        
         // Show loading state
         const submitButton = submissionForm.querySelector('.submit-btn');
         const originalButtonText = submitButton.textContent;

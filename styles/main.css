@@ -13,8 +13,8 @@
     --text-secondary: #8892b0;
     --accent-primary: #64ffda;
     --accent-secondary: #4db3ff;
-    --border-color: #64ffda;
-    --shadow-color: rgba(100, 255, 218, 0.1);
+    --border-color: #00868B;
+    --shadow-color: rgba(0, 134, 139, 0.3);
     --success-color: #64ffda;
     --error-color: #ff6b6b;
     --error-bg: #2d1a1a;
@@ -55,7 +55,7 @@ header {
     border-radius: 8px;
     margin-bottom: 20px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px var(--shadow-color);
     border: 1px solid var(--border-color);
@@ -652,6 +652,7 @@ header h1 {
     font-weight: bold;
     color: var(--text-primary);
     font-family: 'Courier New', monospace;
+    padding: 10px;
 }
 
 .current-date {
@@ -1109,3 +1110,45 @@ textarea:focus {
         display: none;
     }
 } 
+/* Large clock styles */
+.large-clock {
+    margin-left: 100px;
+    transform: scale(1.05);
+    transform-origin: left center;
+    border: 2px solid #00868B;
+    border-radius: 8px;
+}
+.futuristic-clock {
+    background: #000;
+    box-shadow: 0 0 10px #00868B, 0 0 20px #00868B;
+}
+
+.futuristic-clock #current-time {
+    font-family: 'Orbitron', 'Courier New', monospace;
+    color: #00ffff;
+    text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+    letter-spacing: 2px;
+    background: linear-gradient(to bottom, #00ffff 0%, #00868B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 15px;
+}
+/* Global contour line styles */
+* {
+    border-color: #00868B !important;
+}
+
+.task-item, .submission-form, .result-container, .test-coverage, 
+.test-progress-container, .test-results-summary, .task-conditions-section,
+.task-list, .main-content, header, .test-result-item, textarea, .submit-btn {
+    border-color: #00868B !important;
+    box-shadow: 0 2px 4px rgba(0, 134, 139, 0.2) !important;
+}
+
+.test-result.passed {
+    border-left-color: #00868B !important;
+}
+
+.test-result-item.passed {
+    border-left-color: #00868B !important;
+}

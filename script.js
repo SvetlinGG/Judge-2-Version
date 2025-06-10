@@ -14,7 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
         taskItems: document.querySelectorAll(".task-item"),
         taskConditionsSection: document.querySelector('.task-conditions-section'),
         taskConditionsContent: document.querySelector('.task-conditions-content'),
-        closeTaskBtn: document.querySelector('.close-task-btn')
+        closeTaskBtn: document.querySelector('.close-task-btn'),
+        currentTime: document.getElementById("current-time"),
+        themeToggle: document.getElementById("themeToggle")
     };
 
     
@@ -24,6 +26,44 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Clock functionality
+    function updateClock() {
+        const now = new Date();
+        const timeElement = elements.currentTime;
+        
+        if (timeElement) {
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+    }
+    
+    // Update clock immediately and then every second
+    updateClock();
+    setInterval(updateClock, 1000);
+    
+    // Theme toggle functionality
+    const themeToggle = elements.themeToggle;
+    if (themeToggle) {
+        const themeIcon = themeToggle.querySelector(".theme-icon");
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+        themeIcon.textContent = savedTheme === "dark" ? "☀️" : "🌙";
+        
+        themeToggle.addEventListener("click", () => {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const newTheme = currentTheme === "dark" ? "light" : "dark";
+            
+            document.documentElement.setAttribute("data-theme", newTheme);
+            themeIcon.textContent = newTheme === "dark" ? "☀️" : "🌙";
+            
+            localStorage.setItem("theme", newTheme);
+        });
+    }
+    
     // Syntax highlighting functionality
     const solutionCode = document.getElementById("solutionCode");
     let highlightedCode = '';

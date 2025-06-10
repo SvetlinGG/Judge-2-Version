@@ -148,10 +148,26 @@ document.addEventListener("DOMContentLoaded", () => {
             },
         ],
         task2: [
-            { input: [5, 3], expected: 8, description: "Positive numbers" },
-            { input: [-1, 1], expected: 0, description: "Negative and positive" },
-            { input: [0, 0], expected: 0, description: "Zero values" },
-            { input: [10, 20], expected: 30, description: "Larger numbers" },
+            { 
+                input: [5, 3], 
+                expected: 8, 
+                description: "Positive numbers (5 + 3 = 8)" 
+            },
+            { 
+                input: [-1, 1], 
+                expected: 0, 
+                description: "Negative and positive (-1 + 1 = 0)" 
+            },
+            { 
+                input: [0, 0], 
+                expected: 0, 
+                description: "Zero values (0 + 0 = 0)" 
+            },
+            { 
+                input: [10, 20], 
+                expected: 30, 
+                description: "Larger numbers (10 + 20 = 30)" 
+            },
         ],
         task3: [
             { input: ["radar"], expected: true, description: "Simple palindrome" },

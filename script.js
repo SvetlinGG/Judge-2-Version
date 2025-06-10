@@ -639,6 +639,13 @@ function processInput(type, input) {
                 (passedTests / tests.length) *
                 100
             ).toFixed(0)}%`;
+            
+            // Add animation class
+            coveragePercentage.classList.add('updated');
+            // Remove animation class after animation completes
+            setTimeout(() => {
+                coveragePercentage.classList.remove('updated');
+            }, 500);
 
             // Update coverage details with test results
             coverageDetails.innerHTML = results

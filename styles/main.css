@@ -2,4 +2,68 @@
 @import 'base.css';
 @import 'layout.css';
 @import 'components.css';
-@import 'utilities.css'; 
+@import 'utilities.css';
+
+.coverage-percentage {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent-primary);
+    transition: all 0.3s ease;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 8px;
+    background-color: var(--bg-secondary);
+    min-width: 80px;
+}
+
+.coverage-percentage.updated {
+    animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.coverage-header {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.test-coverage {
+    background-color: var(--bg-primary);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px var(--shadow-color);
+    min-width: 150px;
+}
+
+.coverage-details {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+}
+
+.test-result {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    background-color: var(--bg-secondary);
+}
+
+.test-result.passed {
+    border-left: 3px solid var(--success-color);
+}
+
+.test-result.failed {
+    border-left: 3px solid var(--error-color);
+} 

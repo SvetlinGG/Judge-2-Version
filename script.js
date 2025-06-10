@@ -97,18 +97,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeIcon = themeToggle.querySelector(".theme-icon");
 
     // Check for saved theme preference
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-        document.documentElement.setAttribute("data-theme", savedTheme);
-        themeIcon.textContent = savedTheme === "dark" ? "☀️" : "🌙";
-    }
+    const savedTheme = localStorage.getItem("theme") || "light";
+    document.documentElement.setAttribute("data-theme", savedTheme);
+    themeIcon.textContent = savedTheme === "dark" ? "☀️" : "🌙";
 
     themeToggle.addEventListener("click", () => {
         const currentTheme = document.documentElement.getAttribute("data-theme");
         const newTheme = currentTheme === "dark" ? "light" : "dark";
 
+        // Update theme
         document.documentElement.setAttribute("data-theme", newTheme);
         themeIcon.textContent = newTheme === "dark" ? "☀️" : "🌙";
+        
+        // Save preference
         localStorage.setItem("theme", newTheme);
         
         // Update syntax highlighting after theme change

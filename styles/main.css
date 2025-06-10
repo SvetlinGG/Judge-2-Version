@@ -4,6 +4,76 @@
 @import 'components.css';
 @import 'utilities.css';
 
+/* CSS Variables for theming */
+:root {
+    /* Light theme (default) */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f5;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --accent-primary: #4a90e2;
+    --accent-secondary: #2c3e50;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --success-color: #2ecc71;
+    --error-color: #e74c3c;
+    --error-bg: #fde8e8;
+    --surface-primary: #ffffff;
+    --surface-secondary: #f8f9fa;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --accent-primary: #64b5f6;
+    --accent-secondary: #90caf9;
+    --border-color: #404040;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --success-color: #4caf50;
+    --error-color: #f44336;
+    --error-bg: #2d1a1a;
+    --surface-primary: #2d2d2d;
+    --surface-secondary: #333333;
+}
+
+/* Base styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme toggle button styles */
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background-color: var(--bg-secondary);
+}
+
+.theme-icon {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover .theme-icon {
+    transform: rotate(30deg);
+}
+
 .coverage-percentage {
     font-size: 1.1rem;
     font-weight: bold;

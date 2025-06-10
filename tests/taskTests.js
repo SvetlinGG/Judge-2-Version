@@ -1,4 +1,11 @@
 const taskTests = {
+    task1: [
+        {
+            description: "Hello World test",
+            input: null,
+            expected: "Hello, World!"
+        }
+    ],
     task4: [
         {
             description: "Basic prime number test",

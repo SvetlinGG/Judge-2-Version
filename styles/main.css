@@ -48,6 +48,18 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Header styles */
+header {
+    background-color: var(--bg-secondary);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
 /* Theme toggle button styles */
 .theme-toggle {
     background-color: var(--surface-primary);
@@ -60,6 +72,10 @@ body {
     justify-content: center;
     transition: all 0.3s ease;
     box-shadow: 0 2px 4px var(--shadow-color);
+    width: 40px;
+    height: 40px;
+    position: relative;
+    z-index: 1000;
 }
 
 .theme-toggle:hover {
@@ -69,6 +85,7 @@ body {
 
 .theme-icon {
     font-size: 1.5rem;
+    transition: transform 0.3s ease;
 }
 
 .theme-toggle:hover .theme-icon {

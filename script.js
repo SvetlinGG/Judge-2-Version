@@ -22,61 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Clock functionality
-    function updateClock() {
-        const now = new Date();
-        const timeElement = document.getElementById("current-time");
-        const dateElement = document.getElementById("current-date");
-
-        if (!timeElement || !dateElement) {
-            console.error("Clock elements not found");
-            return;
-        }
-
-        // Update time with leading zeros for better visibility
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        timeElement.textContent = `${hours}:${minutes}:${seconds}`;
-
-        // Update date with full format
-        const options = {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        };
-        dateElement.textContent = now.toLocaleDateString(undefined, options);
-    }
-
-    // Update clock immediately and then every second
-    updateClock();
-    setInterval(updateClock, 1000);
-
-    // Theme toggle functionality
-    const themeToggle = document.getElementById("themeToggle");
-    const themeIcon = themeToggle.querySelector(".theme-icon");
-
-    // Check for saved theme preference
-    const savedTheme = localStorage.getItem("theme") || "light";
-    document.documentElement.setAttribute("data-theme", savedTheme);
-    themeIcon.textContent = savedTheme === "dark" ? "☀️" : "🌙";
-
-    themeToggle.addEventListener("click", () => {
-        const currentTheme = document.documentElement.getAttribute("data-theme");
-        const newTheme = currentTheme === "dark" ? "light" : "dark";
-
-        // Update theme
-        document.documentElement.setAttribute("data-theme", newTheme);
-        themeIcon.textContent = newTheme === "dark" ? "☀️" : "🌙";
-        
-        // Save preference
-        localStorage.setItem("theme", newTheme);
-        
-        // Update syntax highlighting after theme change
-        setTimeout(updateHighlighting, 0);
-    });
-
     // Syntax highlighting functionality
     const solutionCode = document.getElementById("solutionCode");
     let highlightedCode = '';

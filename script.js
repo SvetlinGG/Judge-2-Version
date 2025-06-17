@@ -74,10 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let highlightedCode = '';
 
     function highlightSyntax(code) {
-        // Method names pattern (common JavaScript methods)
+        
         const methodPattern = /\b(function|return|if|else|for|while|const|let|var)\b/g;
         
-        // Replace methods with highlighted spans
+        
         return code.replace(methodPattern, match => `<span class="method">${match}</span>`);
     }
 
@@ -85,29 +85,29 @@ document.addEventListener("DOMContentLoaded", () => {
         const code = solutionCode.value;
         highlightedCode = highlightSyntax(code);
         
-        // Create a temporary div to hold the highlighted content
+        
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = highlightedCode;
         
-        // Get the plain text content
+        
         const plainText = tempDiv.textContent;
         
-        // Update the textarea with plain text
+        
         solutionCode.value = plainText;
         
-        // Store the highlighted version
+        
         solutionCode.dataset.highlighted = highlightedCode;
     }
 
-    // Add event listeners for syntax highlighting
+    
     solutionCode.addEventListener('input', updateHighlighting);
     solutionCode.addEventListener('focus', updateHighlighting);
     solutionCode.addEventListener('blur', updateHighlighting);
 
-    // Initialize highlighting for any existing content
+    
     updateHighlighting();
 
-    // Task selection and condition loading
+    
     const taskItems = document.querySelectorAll('.task-item');
     const taskConditionsSection = document.querySelector('.task-conditions-section');
     const taskConditionsContent = document.querySelector('.task-conditions-content');
@@ -119,13 +119,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function loadTaskCondition(taskNumber) {
         try {
-            // Show loading state
+            
             testInputTextarea.value = 'Loading task conditions...';
             
-            // Extract task number from the task identifier (e.g., "task4" -> "4")
+            
             const taskId = taskNumber.replace('task', '');
             
-            // Fetch the markdown file from the task-conditions directory
+            
             const response = await fetch(`task-conditions/task${taskId}.md`);
             if (!response.ok) {
                 throw new Error(`Failed to load task ${taskId}`);
@@ -133,10 +133,10 @@ document.addEventListener("DOMContentLoaded", () => {
             
             const content = await response.text();
             
-            // Load the content into the test input field
+            
             testInputTextarea.value = content;
             
-            // Configure the test input field
+            
             testInputTextarea.readOnly = true;
             testInputTextarea.style.overflowY = 'auto';
             testInputTextarea.style.height = '300px';
@@ -147,14 +147,14 @@ document.addEventListener("DOMContentLoaded", () => {
             
             currentTask = taskNumber;
             
-            // Enable code textarea
+            
             codeTextarea.disabled = false;
             codeTextarea.placeholder = `Write your solution for Task ${taskId} here...`;
             
-            // Clear previous code
+            
             codeTextarea.value = '';
             
-            // Update active state
+            
             taskItems.forEach(item => {
                 item.classList.toggle('active', item.dataset.task === taskNumber);
             });

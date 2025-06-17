@@ -528,7 +528,7 @@ textarea:focus {
     }
 }
 
-/* Landscape Mode for Smartphones */
+
 @media (max-height: 480px) and (orientation: landscape) {
     .container {
         padding: 0.5rem;
@@ -564,7 +564,7 @@ textarea:focus {
     }
 }
 
-/* Print Styles */
+
 @media print {
     .time-section,
     .theme-toggle,

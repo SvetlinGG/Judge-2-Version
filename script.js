@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 item.classList.toggle('active', item.dataset.task === taskNumber);
             });
 
-            // Show the close button for test input
+            
             document.getElementById('closeTestInput').style.display = 'block';
 
         } catch (error) {
@@ -168,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Close task conditions
+    
     function closeTaskConditions() {
         taskConditionsSection.classList.remove('visible');
         taskItems.forEach(item => item.classList.remove('active'));
@@ -179,11 +179,11 @@ document.addEventListener("DOMContentLoaded", () => {
         testInputTextarea.readOnly = true;
         currentTask = null;
         
-        // Hide the close button for test input
+        
         document.getElementById('closeTestInput').style.display = 'none';
     }
     
-    // Close test input
+   
     function closeTestInput() {
         testInputTextarea.value = '';
         document.getElementById('closeTestInput').style.display = 'none';
@@ -200,18 +200,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     closeTaskBtn.addEventListener('click', closeTaskConditions);
     
-    // Add event listener for close test input button
+    
     document.getElementById('closeTestInput').addEventListener('click', closeTestInput);
     
-    // Hide the close button initially
+    
     document.getElementById('closeTestInput').style.display = 'none';
 
-    // Initialize with first task
+    
     if (taskItems.length > 0) {
         loadTaskCondition(taskItems[0].dataset.task);
     }
 
-    // Form submission handling
+    
     const submissionForm = document.getElementById("submissionForm");
     const resultContent = document.getElementById("resultContent");
     const coveragePercentage = document.getElementById("coveragePercentage");
@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const taskId = activeTask.getAttribute("data-task");
         const tests = taskTests[taskId];
 
-        // Show loading state
+        
         const submitButton = submissionForm.querySelector('.submit-btn');
         const originalButtonText = submitButton.textContent;
         submitButton.textContent = 'Testing...';
@@ -245,17 +245,17 @@ document.addEventListener("DOMContentLoaded", () => {
         submitButton.classList.add('testing');
 
         try {
-            // Add a small delay to show the testing state
+            
             await new Promise(resolve => setTimeout(resolve, 500));
 
-            // Measure execution time
+            
             const startTime = performance.now();
 
-            // Run tests
+            
             let passedTests = 0;
             const results = [];
 
-            // Dynamically create a function
+            
             let match = code.match(/function\s+([a-zA-Z_$][0-9a-zA-Z_$]*)\s*\(/);
             const functionName = match ? match[1] : null;
 
@@ -266,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const params = getFunctionParameters(code);
             const func = new Function(...params, `${code}; return ${functionName}(${params.join(",")});`);
 
-            // Run each test case
+            
             tests.forEach((test, index) => {
                 try {
                     let result;
@@ -301,7 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
-            // Update results display
+            
             resultContent.innerHTML = `
                 <div class="test-progress-container">
                     <div class="test-stats">
@@ -337,14 +337,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
 
-            // Update coverage percentage display
+            
             coveragePercentage.textContent = `${((passedTests / tests.length) * 100).toFixed(0)}%`;
             coveragePercentage.classList.add('updated');
             setTimeout(() => {
                 coveragePercentage.classList.remove('updated');
             }, 500);
 
-            // Update coverage details
+            
             coverageDetails.innerHTML = results
                 .map(
                     (result) => `
@@ -359,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 )
                 .join("");
 
-            // Measure execution time
+            
             const endTime = performance.now();
             const executionTimeMs = endTime - startTime;
             executionTime.textContent = `Execution time: ${executionTimeMs.toFixed(2)}ms`;
@@ -372,7 +372,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
         } finally {
-            // Reset button state with a small delay
+            
             setTimeout(() => {
                 submitButton.textContent = originalButtonText;
                 submitButton.disabled = false;

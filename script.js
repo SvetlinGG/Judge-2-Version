@@ -1,7 +1,7 @@
-// Import test cases
+
 import taskTests from './tests/taskTests.js';
 
-// Add marked.js for markdown parsing
+
 const markedScript = document.createElement('script');
 markedScript.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
 document.head.appendChild(markedScript);
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Clock functionality
+    
     function updateClock() {
         const now = new Date();
         const timeElement = elements.currentTime;
@@ -44,16 +44,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     
-    // Update clock immediately and then every second
+    
     updateClock();
     setInterval(updateClock, 1000);
     
-    // Theme toggle functionality
+    
     const themeToggle = elements.themeToggle;
     if (themeToggle) {
         const themeIcon = themeToggle.querySelector(".theme-icon");
         
-        // Check for saved theme preference
+        
         const savedTheme = localStorage.getItem("theme") || "dark";
         document.documentElement.setAttribute("data-theme", savedTheme);
         themeIcon.textContent = savedTheme === "dark" ? "☀️" : "🌙";
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
     
-    // Syntax highlighting functionality
+    
     const solutionCode = document.getElementById("solutionCode");
     let highlightedCode = '';
 
